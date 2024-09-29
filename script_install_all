@@ -1,0 +1,41 @@
+
+npm init -y
+
+#Install Express
+npm install express --save 
+
+#Nodemon redémarre le serveur chaque fois qu'on change le code
+npm install -g nodemon
+
+#Gestion des erreurs
+npm install winston
+
+#Swagger
+npm install swagger-ui-express swagger-jsdoc
+npm install --save-dev @types/swagger-jsdoc
+npm install --save-dev @types/swagger-ui-express
+
+#Dépendances pour TypeScript & Express
+npm install typescript ts-node-dev @types/node @types/express --save-dev
+
+#Configurer TypeScript
+npx tsc --init
+
+#json web tocken
+npm install express jsonwebtoken bcryptjs
+npm i --save-dev @types/jsonwebtoken @types/bcryptjs
+
+#Install Express avec HTTPS
+npm install express fs https
+
+#Clés publiques
+npm install node-rsa
+npm i --save-dev @types/node-rsa
+
+#Clés secretes
+npm install crypto
+
+#Stockage sécuritaire des données utilisateurs
+npm install bcryptjs
+
+npm install node-fetch

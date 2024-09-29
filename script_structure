@@ -1,0 +1,54 @@
+# Créer les répertoires
+mkdir -p src/interfaces
+mkdir -p src/models
+mkdir -p src/controllers
+mkdir -p src/services
+mkdir -p src/middlewares
+mkdir -p src/routes
+mkdir -p src/utils
+mkdir -p tests
+
+# Créer les fichiers dans src/interfaces
+touch src/interfaces/user.interface.ts
+touch src/interfaces/product.interface.ts
+
+
+# Créer les fichiers dans src/models
+touch src/models/user.model.ts
+touch src/models/product.model.ts
+
+
+# Créer les fichiers dans src/controllers
+touch src/controllers/user.controller.ts
+touch src/controllers/product.controller.ts
+
+
+# Créer les fichiers dans src/services
+touch src/services/user.service.ts
+touch src/services/product.service.ts
+
+
+# Créer les fichiers dans src/middlewares
+touch src/middlewares/auth.middleware.ts
+touch src/middlewares/error.middleware.ts
+
+# Créer les fichiers dans src/routes
+touch src/routes/user.route.ts
+touch src/routes/product.route.ts
+
+# Créer les fichiers dans src/utils
+touch src/utils/logger.ts
+
+# Créer les fichiers dans src
+touch src/app.ts
+touch src/index.ts
+
+# Créer les fichiers dans tests
+touch tests/user.test.ts
+touch tests/product.test.ts
+
+# Créer les fichiers à la racine du projet
+touch tsconfig.json
+touch package.json
+touch README.md
+
