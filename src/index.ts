@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
 import userRoutes from './routes/users.route';
+import {UserService} from './services/users.service'
+import { ProductsService } from './services/products.service';
 
 const app = express();
 const port = 3000;
@@ -16,5 +18,9 @@ app.use('/', userRoutes);
 
 // Démarrage du serveur
 app.listen(port, () => {
+  
   console.log(`Serveur en écoute sur <http://localhost>:${port}`);
+  UserService.getAllUsers();
+  ProductsService.getAllProducts();
+  console.log('On est dans index');
 });
