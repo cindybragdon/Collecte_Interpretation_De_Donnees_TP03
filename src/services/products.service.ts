@@ -18,35 +18,10 @@ export class ProductsService {
     // Supposons que tu aies une URL d'API qui renvoie les utilisateurs au format JSON
     const productsFromApi = await fetch('https://fakestoreapi.com/products')
       .then(response => response.json());
+      
 
-
-    // Map des données récupérées depuis l'API à des instances de UsersModel
-    // const users = usersFromApi.map((user: any) => new UsersModel(
-    //   {
-    //     geolocation: {
-    //       lat: user.address.geolocation.lat,
-    //       long: user.address.geolocation.long
-    //     },
-    //     city: user.address.city,
-    //     street: user.address.street,
-    //     number: user.address.number,
-    //     zipcode: user.address.zipcode
-    //   },
-    //   user.id,
-    //   user.email, 
-    //   user.username, 
-    //   "password", 
-    //   {
-    //     firstname: user.name.firstname,
-    //     lastname: user.name.lastname
-    //   },
-    //   user.phone, 
-    //   user.__v 
-    // ));
-
-
-    //Populer le JSON avec usersData
-    const usersData = JSON.stringify(productsFromApi, null, 2);
+    //Populer le JSON avec productsData
+    const productsData = JSON.stringify(productsFromApi, null, 2);
     const dir = path.join(__dirname, '../../data');
     const filePath = path.join(dir, 'productsData.json');
 
@@ -56,10 +31,10 @@ export class ProductsService {
 
 
       try {
-        fs.writeFileSync(filePath, usersData);
-        console.log('Le fichier productsData.json est populé par API FakeStore');
+        fs.writeFileSync(filePath, productsData);
+        console.log('SERVICE : Le fichier productsData.json est populé par API FakeStore/products');
       }catch(err) {
-        console.error('Erreur lors de lécriture de productsData dans productsData.json');
+        console.error('SERVICE : Erreur lors de lécriture de productsData dans productsData.json');
       }
         
 

@@ -4,6 +4,7 @@ import { UserService } from '../services/users.service';
 
 export class UserController {
   public async getAllUsers(req: Request, res: Response): Promise<void> {
+    console.log('REFRESH BROWSER On est dans UserController');
     const users = await UserService.getAllUsers();
     res.json(users);
   }

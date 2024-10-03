@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import userRoutes from './routes/users.route';
+import productRoutes from './routes/products.route';
 import {UserService} from './services/users.service'
 import { ProductsService } from './services/products.service';
 
@@ -15,12 +16,12 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/', userRoutes);
+app.use('/', productRoutes);
 
 // Démarrage du serveur
 app.listen(port, () => {
-  
   console.log(`Serveur en écoute sur <http://localhost>:${port}`);
+  console.log('DÉMARRAGE SERVEUR On est dans index');
   UserService.getAllUsers();
   ProductsService.getAllProducts();
-  console.log('On est dans index');
 });

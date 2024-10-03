@@ -14,7 +14,7 @@ export class UserService {
 
   public static async getAllUsers(): Promise<Users[]> {
     //const password = key.encrypt('password', 'base64');
-
+      
     // Supposons que tu aies une URL d'API qui renvoie les utilisateurs au format JSON
     const usersFromApi = await fetch('https://fakestoreapi.com/users')
       .then(response => response.json());
@@ -57,9 +57,9 @@ export class UserService {
 
       try {
         fs.writeFileSync(filePath, usersData);
-        console.log('Le fichier usersData.json est populé par API FakeStore');
+        console.log('SERVICE : Le fichier usersData.json est populé par API FakeStore/users');
       }catch(err) {
-        console.error('Erreur lors de lécriture de usersData dans usersData.json');
+        console.error('SERVICE : Erreur lors de lécriture de usersData dans usersData.json');
       }
         
 
