@@ -18,10 +18,28 @@ export class ProductsService {
     // Supposons que tu aies une URL d'API qui renvoie les utilisateurs au format JSON
     const productsFromApi = await fetch('https://fakestoreapi.com/products')
       .then(response => response.json());
+
+    
+      // Map des données récupérées depuis l'API à des instances de UsersModel
+      const products = productsFromApi.map((product: Products) => {
+        const minInStock = 0;
+        const maxInStock = 100;
+        const stock = Math.floor(Math.random() * (maxInStock - minInStock) + minInStock);
+        
+        return new ProductsModel(  // Ensure you return the new object
+          product.id,
+          product.title,     
+          product.price, 
+          product.description,
+          product.category,
+          stock
+        );
+      });
+      
       
 
     //Populer le JSON avec productsData
-    const productsData = JSON.stringify(productsFromApi, null, 2);
+    const productsData = JSON.stringify(products, null, 2);
     const dir = path.join(__dirname, '../../data');
     const filePath = path.join(dir, 'productsData.json');
 
@@ -38,6 +56,6 @@ export class ProductsService {
       }
         
 
-    return productsFromApi;
+    return products;
   }
 }

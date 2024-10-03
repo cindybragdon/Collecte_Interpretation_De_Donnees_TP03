@@ -20,7 +20,7 @@ export class UserService {
       .then(response => response.json());
 
 
-    // Map des données récupérées depuis l'API à des instances de UsersModel
+    //Map des données récupérées depuis l'API à des instances de UsersModel
     // const users = usersFromApi.map((user: any) => new UsersModel(
     //   {
     //     geolocation: {

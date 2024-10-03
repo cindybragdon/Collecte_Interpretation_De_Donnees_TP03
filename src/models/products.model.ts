@@ -7,6 +7,9 @@ export class ProductsModel implements Products{
         public title: string,
         public price: number,
         public description: string,
-        public category: string
-    ) {}
+        public category: string,
+        public inStock: number
+    ) {
+        
+    }
 }

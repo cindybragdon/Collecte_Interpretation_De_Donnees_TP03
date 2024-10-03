@@ -22,7 +22,8 @@ const productsController = new ProductsController();
         title: string,
         price: number,
         description: string,
-        category: string
+        category: string,
+        public inStock: number
  */
 router.get('/products', productsController.getAllProducts);
 
