@@ -26,6 +26,7 @@ const productsController = new ProductsController();
         public inStock: number
  */
 router.get('/products', productsController.getAllProducts);
+router.get('/products/:minPrice?/:maxPrice?/:minStock?/:maxStock?', productsController.getAllProducts);
 
 //router.get('/admin', verifyToken, roleMiddleware(['admin']), UserController.getAdminData);
 
