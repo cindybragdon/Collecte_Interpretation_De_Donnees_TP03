@@ -3,6 +3,7 @@ import userRoutes from './routes/users.route';
 import productRoutes from './routes/products.route';
 import {UserService} from './services/users.service'
 import { ProductsService } from './services/products.service';
+import { fetchFromAPi } from './fetchUsersApi';
 
 const app = express();
 const port = 3000;
@@ -22,6 +23,7 @@ app.use('/', productRoutes);
 app.listen(port, () => {
   console.log(`Serveur en écoute sur <http://localhost>:${port}`);
   console.log('DÉMARRAGE SERVEUR On est dans index');
+  fetchFromAPi()
   UserService.getAllUsers();
   ProductsService.getAllProducts();
 });

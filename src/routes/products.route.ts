@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { ProductsController } from '../controllers/products.controller';
+import { ProductsService } from '../services/products.service';
 //import { roleMiddleware } from '../middlewares/roles.middleware';
 //import { verifyToken } from '../middlewares/auth.middleware';
 
@@ -25,9 +26,19 @@ const productsController = new ProductsController();
         category: string,
         public inStock: number
  */
+
+////http://localhost:3000/products        
 router.get('/products', productsController.getAllProducts);
-router.get('/products/:minPrice?/:maxPrice?/:minStock?/:maxStock?', productsController.getAllProducts);
+
+//http://localhost:3000/products?minPrice=0&maxPrice=1000&minInStock=0&maxInStock=20
+router.get('/products/:minPrice?/:maxPrice?/:minInStock?/:maxInStock?', productsController.getAllProducts);
+
+router.post('/products', productsController.postNewProduct);
+
+
 
 //router.get('/admin', verifyToken, roleMiddleware(['admin']), UserController.getAdminData);
 
 export default router;
+
+// POST - Ajouter un nouveau livre
