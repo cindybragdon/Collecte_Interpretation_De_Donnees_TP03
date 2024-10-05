@@ -188,8 +188,8 @@ public putProduct = async (req: Request, res: Response): Promise<void> => {
     else{
       //Appel a ProductsService pour delete le fichier productsData.json avec le nouveau produit
       await ProductsService.deleteProductById(idBody, productJson);
-      console.log('PRODUCTS CONTROLLER : 204 Le produit a été modifié retiré du fichier productsData.json')
-      res.status(204).json({message: 'Le produit a été modifié retiré du fichier productsData.json'})
+      console.log('PRODUCTS CONTROLLER : 204 Le produit a été retiré du fichier productsData.json')
+      res.status(204).json({message: 'Le produit a été retiré du fichier productsData.json'})
       return;
     }   
     };
