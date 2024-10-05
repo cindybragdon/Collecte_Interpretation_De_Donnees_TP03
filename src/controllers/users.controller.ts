@@ -1,3 +1,12 @@
+// Le CONTROLLER est le point d'entrée des requêtes HTTP. Il reçoit 
+// les requêtes, vérifie les paramètres d'entrée (ex. l'ID du produit),
+//  et utilise le service pour effectuer des opérations.
+// Le contrôleur ne devrait pas contenir de logique métier complexe. 
+// Il devrait principalement déléguer les tâches au service.
+// Par exemple, dans ton ProductsController, tu aurais une fonction 
+// qui récupère l'ID d'une requête, appelle la méthode findById 
+// du service, puis renvoie la réponse au client.
+
 import { Request, Response } from 'express';
 import { UserService } from '../services/users.service';
 

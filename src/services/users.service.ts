@@ -1,3 +1,10 @@
+// Le SERVICE contient la logique métier (business logic), c'est-à-dire
+// les opérations qui manipulent directement les données ou les 
+// exécutent. Le service est responsable d'effectuer des actions telles
+// que accéder aux bases de données, lire/écrire dans des fichiers, 
+// ou effectuer des transformations sur les données.Exemplle, la 
+//fonction findById appartient au service car elle contient la logique 
+//de récupération des produits et de leur filtrage basé sur l'ID.
 
 import { Users } from '../interfaces/users.interface';
 import { UsersModel } from '../models/users.model';
