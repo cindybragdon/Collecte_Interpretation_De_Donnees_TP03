@@ -14,7 +14,6 @@ import * as fs from "fs";
 import * as path from "path";
 import { error } from "console";
 
-//import { key } from '../services/auth.service';
 
 export class ProductsService {
 

@@ -32,6 +32,8 @@ npm install express fs https
 npm install node-rsa
 npm i --save-dev @types/node-rsa
 
+npm install dotenv
+
 #Clés secretes
 npm install crypto
 

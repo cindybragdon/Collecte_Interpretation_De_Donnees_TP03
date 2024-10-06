@@ -218,5 +218,27 @@
     },
     "phone": "1-104-001-4567",
     "__v": 0
+  },
+  {
+    "address": {
+      "geolocation": {
+        "lat": "25",
+        "long": "30"
+      },
+      "city": "Montreal",
+      "street": "Radisson",
+      "number": 69,
+      "zipcode": "j6w631"
+    },
+    "id": 11,
+    "email": "miniwheat@post.com",
+    "username": "Dede",
+    "password": "$2a$10$0szV2ZEyExwvEZIH5A3Tr.Fo4JzhKKkS.1jbkw3LsEZO9v5oHrtzi",
+    "name": {
+      "firstname": "doudou",
+      "lastname": "redoudou"
+    },
+    "phone": "514-260-6849",
+    "__v": 44
   }
 ]

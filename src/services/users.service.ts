@@ -1,75 +1,57 @@
-// Le SERVICE contient la logique métier (business logic), c'est-à-dire
-// les opérations qui manipulent directement les données ou les 
-// exécutent. Le service est responsable d'effectuer des actions telles
-// que accéder aux bases de données, lire/écrire dans des fichiers, 
-// ou effectuer des transformations sur les données.Exemplle, la 
-//fonction findById appartient au service car elle contient la logique 
-//de récupération des produits et de leur filtrage basé sur l'ID.
-
-import { Users } from '../interfaces/users.interface';
-import { UsersModel } from '../models/users.model';
+import { Users } from "../interfaces/users.interface";
+import { UsersModel } from "../models/users.model";
 import * as fs from 'fs';
-import * as path from 'path';
+import * as generator from 'generate-password';
 
-//import { key } from '../services/auth.service';
-
-export class UserService {
-  
-  public static findByEmail(email: string) {
-    return this.getAllUsers().then(users => users.filter(user => user.email === email)[0]);
-  }
-
+export class UsersService {
+  //*********************GET ALL USERS PLUS GENERATED PASSWORD*******************//
   public static async getAllUsers(): Promise<Users[]> {
-    //const password = key.encrypt('password', 'base64');
-      
-    // Supposons que tu aies une URL d'API qui renvoie les utilisateurs au format JSON
-    const usersFromApi = await fetch('https://fakestoreapi.com/users')
-      .then(response => response.json());
+  
+    // Charger les données utilisateur à partir d'un fichier JSON
+const usersList: Users[] = Array.from(JSON.parse(fs.readFileSync('./data/usersData.json', { encoding: 'utf8', flag: 'r' })));
 
+  // Mapper les données récupérées depuis l'API à des instances de UsersModel en ajoutant un passeword généré
+const users = usersList.map((user: Users) => {
+  return new UsersModel(
+    {
+      geolocation: {
+        lat: user.address.geolocation.lat,
+        long: user.address.geolocation.long
+      },
+      city: user.address.city,
+      street: user.address.street,
+      number: user.address.number,
+      zipcode: user.address.zipcode
+    },
+    user.id,
+    user.email,
+    user.username,
+    user.password, 
+    {
+      firstname: user.name.firstname,
+      lastname: user.name.lastname
+    },
+    user.phone,
+    user.__v
+  );
+});
 
-    //Map des données récupérées depuis l'API à des instances de UsersModel
-    // const users = usersFromApi.map((user: any) => new UsersModel(
-    //   {
-    //     geolocation: {
-    //       lat: user.address.geolocation.lat,
-    //       long: user.address.geolocation.long
-    //     },
-    //     city: user.address.city,
-    //     street: user.address.street,
-    //     number: user.address.number,
-    //     zipcode: user.address.zipcode
-    //   },
-    //   user.id,
-    //   user.email, 
-    //   user.username, 
-    //   "password", 
-    //   {
-    //     firstname: user.name.firstname,
-    //     lastname: user.name.lastname
-    //   },
-    //   user.phone, 
-    //   user.__v 
-    // ));
+return users;
+}
 
-
-    //Populer le JSON avec usersData
-    const usersData = JSON.stringify(usersFromApi, null, 2);
-    const dir = path.join(__dirname, '../../data');
-    const filePath = path.join(dir, 'usersData.json');
-
-    if(!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, {recursive: true});
-    }
-
-
+    //*********************GET USER BY EMAIL*******************//
+    public static async findUserEmail(email: string): Promise<UsersModel | undefined> {
       try {
-        fs.writeFileSync(filePath, usersData);
-        console.log('SERVICE : Le fichier usersData.json est populé par API FakeStore/users');
-      }catch(err) {
-        console.error('SERVICE : Erreur lors de lécriture de usersData dans usersData.json');
-      }
+        const users = await this.getAllUsers();
+        const user = users.find((user) => user.email === email);
         
-
-    return usersFromApi;
-  }
+        if (!email) {
+          console.log(`Le email ${email} n'existe pas dans usersData.json.`);
+        }
+        return user;
+      } catch (error) {
+        console.error(`Erreur lors de la récupération du email ${email}`, error);
+        throw error;
+      }
+    }
 }

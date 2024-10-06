@@ -2,8 +2,8 @@
 export interface Users {
     address: {
         geolocation: {
-          lat: number,
-          long: number
+          lat: string,
+          long: string
         },
         city: string,
         street: string,

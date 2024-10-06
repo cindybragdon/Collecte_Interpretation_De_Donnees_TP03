@@ -94,6 +94,8 @@ const userController = new UserController();
  *           example: 0
  */
 router.get('/users', userController.getAllUsers);
+router.post('/users/register', userController.userConnected)
+router.get('/users/login', userController.loginByEmail);
 
 //router.get('/admin', verifyToken, roleMiddleware(['admin']), UserController.getAdminData);
 

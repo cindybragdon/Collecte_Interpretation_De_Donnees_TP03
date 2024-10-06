@@ -4,8 +4,8 @@ export class UsersModel implements Users {
     constructor(
         public address: {
             geolocation: {
-              lat: number,
-              long: number
+              lat: string,
+              long: string
             },
             city: string,
             street: string,
@@ -17,10 +17,19 @@ export class UsersModel implements Users {
         public username: string,
         public password: string,
         public name: {
-        firstname: string,
-        lastname: string
+            firstname: string,
+            lastname: string
         },
         public phone: string,
         public __v: number
-    ) {}
+    ) {
+        this.address = address;
+        this.id = id;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.phone = phone;
+        this.__v = __v;
+    }
 }

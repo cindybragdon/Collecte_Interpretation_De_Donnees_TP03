@@ -10,6 +10,11 @@ export class ProductsModel implements Products{
         public category: string,
         public inStock: number
     ) {
-        
+        this.id = id;
+        this.title = title;
+        this.price = price;
+        this.description = description;
+        this.category = category;
+        this.inStock = inStock;
     }
 }
