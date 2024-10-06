@@ -1,10 +1,10 @@
-// Le CONTROLLER est le point d'entrée des requêtes HTTP. Il reçoit 
+// Le CONTROLLER est le point d'entrée des requêtes HTTP. Il reçoit
 // les requêtes, vérifie les paramètres d'entrée (ex. l'ID du produit),
 //  et utilise le service pour effectuer des opérations.
-// Le contrôleur ne devrait pas contenir de logique métier complexe. 
+// Le contrôleur ne devrait pas contenir de logique métier complexe.
 // Il devrait principalement déléguer les tâches au service.
-// Par exemple, dans ton ProductsController, tu aurais une fonction 
-// qui récupère l'ID d'une requête, appelle la méthode findById 
+// Par exemple, dans ton ProductsController, tu aurais une fonction
+// qui récupère l'ID d'une requête, appelle la méthode findById
 // du service, puis renvoie la réponse au client.
 
 import { Request, Response } from "express";
@@ -14,7 +14,6 @@ import { Products } from "../interfaces/products.interface";
 import * as fs from "fs";
 
 export class ProductsController {
-
   //*********************GET ALL PRODUCTS*******************//
   //Methode async qui prend req et res et qui ne retourne rien. getAllProducts fait des appels async
   public getAllProducts = async (
@@ -29,10 +28,18 @@ export class ProductsController {
       const { minPrice, maxPrice, minInStock, maxInStock } = req.query;
 
       //les param sont parsé dans le format nécessaire. Si non présent, ils sont undefined pour éviter les exceptions
-      const minimumPriceValue = minPrice ? parseFloat(minPrice as string) : undefined;
-      const maximumPriceValue = maxPrice ? parseFloat(maxPrice as string) : undefined;
-      const minimumInStockValue = minInStock ? parseInt(minInStock as string) : undefined;
-      const maximumInStockValue = maxInStock ? parseInt(maxInStock as string) : undefined;
+      const minimumPriceValue = minPrice
+        ? parseFloat(minPrice as string)
+        : undefined;
+      const maximumPriceValue = maxPrice
+        ? parseFloat(maxPrice as string)
+        : undefined;
+      const minimumInStockValue = minInStock
+        ? parseInt(minInStock as string)
+        : undefined;
+      const maximumInStockValue = maxInStock
+        ? parseInt(maxInStock as string)
+        : undefined;
 
       //Attend le retour de l'api et des manip faites sur le data
       //Envoie à getProductsFiltered() les param pris de API URL et convertis filtrés
@@ -43,155 +50,233 @@ export class ProductsController {
         minimumInStockValue,
         maximumInStockValue
       );
-      
-      res.status(200).json({message: "On est cool, ça passe! Les products sont filtrés ",product,});
+
+      res
+        .status(200)
+        .json({
+          message: "On est cool, ça passe! Les products sont filtrés ",
+          product,
+        });
       //tests console
       console.log("REFRESH BROWSER On est dans ProductsController");
-
     } catch (error) {
-      res.status(400).json({ message: "Erreur lors du get des products filtrés" });
+      res
+        .status(400)
+        .json({ message: "Erreur lors du get des products filtrés" });
     }
   };
 
   //*********************POST NEW PRODUCT*******************//
-  public postNewProduct = async (req: Request, res: Response): Promise<void> => {
-    
-      //Cueillette des éléments dans le body (Postman) (req.body)
-      const { title, price, description, category, inStock } = req.body;
-      
-      const productsList:Products[] = Array.from(JSON.parse(fs.readFileSync('./data/productsData.json', { encoding: 'utf8', flag: 'r' })));
-      let id = productsList.length+1;
-      const titleRegex = /^.{3,50}$/;
-      const priceRegex = /^[0-9]+(?:\.[0-9]+)?$/;
-      const inStockRegex = /^(0|[1-9][0-9]*)$/;
+  public postNewProduct = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    //Cueillette des éléments dans le body (Postman) (req.body)
+    const { title, price, description, category, inStock } = req.body;
 
-      // Créer une nouvelle instance de ProductsModel avec les données fournies
-      const newProduct = new ProductsModel(
-        id,
-        title,
-        price,
-        description,
-        category,
-        inStock
+    const productsList: Products[] = Array.from(
+      JSON.parse(
+        fs.readFileSync("data/productsData.json", {
+          encoding: "utf8",
+          flag: "r",
+        })
+      )
+    );
+    let id = productsList.length + 1;
+    const titleRegex = /^.{3,50}$/;
+    const priceRegex = /^[0-9]+(?:\.[0-9]+)?$/;
+    const inStockRegex = /^(0|[1-9][0-9]*)$/;
+
+    // Créer une nouvelle instance de ProductsModel avec les données fournies
+    const newProduct = new ProductsModel(
+      id,
+      title,
+      price,
+      description,
+      category,
+      inStock
+    );
+    //401 Si le user n'est pas autorisé
+    // if (AUCUNE IDÉE) {
+    //   console.log('PRODUCTS CONTROLLER : 401 Vous nêtes pas autorisé à ajouter un produit')
+    //   res.status(401).json({ message: "Vous n'êtes pas autorisé à ajouter un produit" });
+    // }
+    //400 Si il manque une donnée dans le request body
+    if (
+      !id ||
+      !title ||
+      !price ||
+      !description ||
+      !category ||
+      !inStock ||
+      !titleRegex.test(title) ||
+      !priceRegex.test(price) ||
+      !inStockRegex.test(inStock)
+    ) {
+      console.log(
+        "PRODUCTS CONTROLLER : 400 Veuillez renseigner tous les champs de tel que demandé"
       );
-      //401 Si le user n'est pas autorisé
-      // if (AUCUNE IDÉE) {
-      //   console.log('PRODUCTS CONTROLLER : 401 Vous nêtes pas autorisé à ajouter un produit')
-      //   res.status(401).json({ message: "Vous n'êtes pas autorisé à ajouter un produit" });
-      // }
-      //400 Si il manque une donnée dans le request body
-      if(!id || !title || !price || !description || !category || !inStock
-         || !titleRegex.test(title) || !priceRegex.test(price) || !inStockRegex.test(inStock)
-      ) {
-        console.log('PRODUCTS CONTROLLER : 400 Veuillez renseigner tous les champs de tel que demandé')
-        res.status(400).json({ message: "Veuillez renseigner tous les champs de tel que demandé" });
-      }
-      else{
-        //Appel a ProductsService pour append le fichier productsData.json avec le nouveau produit
-        await ProductsService.addNewProduct(newProduct);
-        console.log('PRODUCTS CONTROLLER : 200 Le nouveau produit a été ajouté au fichier productsData.json')
-        res.status(200).json({message: 'Le nouveau produit a été ajouté au fichier productsData.json'})
-      }
+      res
+        .status(400)
+        .json({
+          message: "Veuillez renseigner tous les champs de tel que demandé",
+        });
+    } else {
+      //Appel a ProductsService pour append le fichier productsData.json avec le nouveau produit
+      await ProductsService.addNewProduct(newProduct);
+      console.log(
+        "PRODUCTS CONTROLLER : 200 Le nouveau produit a été ajouté au fichier productsData.json"
+      );
+      res
+        .status(200)
+        .json({
+          message:
+            "Le nouveau produit a été ajouté au fichier productsData.json",
+        });
+    }
   };
 
   //*********************GET/PUT PRODUCT BY ID*******************//
-public putProduct = async (req: Request, res: Response): Promise<void> => {
-  
-  // Cueillette des éléments dans le body (Postman) (req.body)
-  const { title, price, description, inStock } = req.body;
+  public putProduct = async (req: Request, res: Response): Promise<void> => {
+    // Cueillette des éléments dans le body (Postman) (req.body)
+    const { title, price, description, inStock } = req.body;
 
-  // Ici on vérifie si on peut convertir le id en int.  
-  // Si il s'agit de chiffre, tout sera cool.  Sinon, ça retourne isNaN
-  const idBody = parseInt(req.params.id);
+    // Ici on vérifie si on peut convertir le id en int.
+    // Si il s'agit de chiffre, tout sera cool.  Sinon, ça retourne isNaN
+    const idBody = parseInt(req.params.id);
 
-  // 401 Si le user n'est pas autorisé
-  // if (AUCUNE IDÉE) {
-  //   console.log('PRODUCTS CONTROLLER : 401 Vous n\'êtes pas autorisé à ajouter un produit')
-  //   res.status(401).json({ message: "Vous n'êtes pas autorisé à ajouter un produit" });
-  // }
-  
-  if (isNaN(idBody) || !idBody) {
-    console.log('CONTROLLER : L ID entré doit être un entier');
-    res.status(400).json({ message: "Veuillez renseigner tous les champs tels que demandés" });
-    return; 
-  }
+    // 401 Si le user n'est pas autorisé
+    // if (AUCUNE IDÉE) {
+    //   console.log('PRODUCTS CONTROLLER : 401 Vous n\'êtes pas autorisé à ajouter un produit')
+    //   res.status(401).json({ message: "Vous n'êtes pas autorisé à ajouter un produit" });
+    // }
 
-  // Recherche du produit dans le JSON
-  const productJson = await ProductsService.findById(idBody);
+    if (isNaN(idBody) || !idBody) {
+      console.log("CONTROLLER : L ID entré doit être un entier");
+      res
+        .status(400)
+        .json({
+          message: "Veuillez renseigner tous les champs tels que demandés",
+        });
+      return;
+    }
 
-  if (!productJson) {
-    console.log('CONTROLLER POST : L ID que vous avez entré n existe pas dans le fichier productsData.json');
-    res.status(404).json({ message: "Le produit correspondant à cet ID n'existe pas dans productData.json" });
-    return; 
-  }
+    // Recherche du produit dans le JSON
+    const productJson = await ProductsService.findById(idBody);
 
-  // Vérifiez si la catégorie existe
-  if (!productJson.category) {
-    console.log('CONTROLLER : Le produit n\'a pas de catégorie définie.');
-    res.status(400).json({ message: "Le produit doit avoir une catégorie." });
-    return; // Ajoutez un retour
-  }
+    if (!productJson) {
+      console.log(
+        "CONTROLLER POST : L ID que vous avez entré n existe pas dans le fichier productsData.json"
+      );
+      res
+        .status(404)
+        .json({
+          message:
+            "Le produit correspondant à cet ID n'existe pas dans productData.json",
+        });
+      return;
+    }
 
-  const titleRegex = /^.{3,50}$/;
-  const priceRegex = /^[0-9]+(?:\.[0-9]+)?$/;
-  const inStockRegex = /^(0|[1-9][0-9]*)$/;
+    // Vérifiez si la catégorie existe
+    if (!productJson.category) {
+      console.log("CONTROLLER : Le produit n'a pas de catégorie définie.");
+      res.status(400).json({ message: "Le produit doit avoir une catégorie." });
+      return; // Ajoutez un retour
+    }
 
-  // Créer une nouvelle instance de ProductsModel avec les données fournies
-  const newProduct = new ProductsModel(
-    idBody,
-    title,
-    price,
-    description,
-    productJson.category,
-    inStock
-  );
+    const titleRegex = /^.{3,50}$/;
+    const priceRegex = /^[0-9]+(?:\.[0-9]+)?$/;
+    const inStockRegex = /^(0|[1-9][0-9]*)$/;
 
-  if (!idBody || !title || !price || !description || !inStock
-      || !titleRegex.test(title) || !priceRegex.test(price) || !inStockRegex.test(inStock)) {
-    console.log('PRODUCTS CONTROLLER PUT: 400 Veuillez renseigner tous les champs tels que demandés');
-    res.status(400).json({ message: "Veuillez renseigner tous les champs tels que demandés" });
-    return; 
-  } else {
-    // Appel à ProductsService pour mettre à jour le fichier productsData.json
-    await ProductsService.updateProduct(idBody, newProduct);
-    console.log('PRODUCTS CONTROLLER : 200 Le produit a été modifié dans le fichier productsData.json');
-    res.status(200).json({ message: 'Le produit a été modifié dans le fichier productsData.json' });
-  }
-};
+    // Créer une nouvelle instance de ProductsModel avec les données fournies
+    const newProduct = new ProductsModel(
+      idBody,
+      title,
+      price,
+      description,
+      productJson.category,
+      inStock
+    );
 
+    if (
+      !idBody ||
+      !title ||
+      !price ||
+      !description ||
+      !inStock ||
+      !titleRegex.test(title) ||
+      !priceRegex.test(price) ||
+      !inStockRegex.test(inStock)
+    ) {
+      console.log(
+        "PRODUCTS CONTROLLER PUT: 400 Veuillez renseigner tous les champs tels que demandés"
+      );
+      res
+        .status(400)
+        .json({
+          message: "Veuillez renseigner tous les champs tels que demandés",
+        });
+      return;
+    } else {
+      // Appel à ProductsService pour mettre à jour le fichier productsData.json
+      await ProductsService.updateProduct(idBody, newProduct);
+      console.log(
+        "PRODUCTS CONTROLLER : 200 Le produit a été modifié dans le fichier productsData.json"
+      );
+      res
+        .status(200)
+        .json({
+          message: "Le produit a été modifié dans le fichier productsData.json",
+        });
+    }
+  };
 
-    //*********************DELETE PRODUCT BY ID*******************//
-    public deleteProduct = async (req: Request, res: Response): Promise<void> => {
-
-    //Ici on vérifie si on peut convertir le id en int.  
+  //*********************DELETE PRODUCT BY ID*******************//
+  public deleteProduct = async (req: Request, res: Response): Promise<void> => {
+    //Ici on vérifie si on peut convertir le id en int.
     //Si il s'agit de chiffre, tout sera cool.  Sinon, ça retourne isNaN
     const idBody = parseInt(req.params.id);
 
     //401 Si le user n'est pas autorisé
-      // if (AUCUNE IDÉE) {
-      //   console.log('PRODUCTS CONTROLLER : 401 Vous nêtes pas autorisé à ajouter un produit')
-      //   res.status(401).json({ message: "Vous n'êtes pas autorisé à ajouter un produit" });
-      // }
-    if(isNaN(idBody) || !idBody) {
-      console.log('CONTROLLER : L ID entré doit etre un entier');
-      res.status(400).json({ message: "Veuillez renseigner tous les champs de tel que demandé" });
+    // if (AUCUNE IDÉE) {
+    //   console.log('PRODUCTS CONTROLLER : 401 Vous nêtes pas autorisé à ajouter un produit')
+    //   res.status(401).json({ message: "Vous n'êtes pas autorisé à ajouter un produit" });
+    // }
+    if (isNaN(idBody) || !idBody) {
+      console.log("CONTROLLER : L ID entré doit etre un entier");
+      res
+        .status(400)
+        .json({
+          message: "Veuillez renseigner tous les champs de tel que demandé",
+        });
       return;
     }
     // Recherche du produit dans le JSON
     const productJson = await ProductsService.findById(idBody);
 
-    if(!productJson) {
-      console.log('CONTROLLER POST : L ID que vous avez entré nexiste pas dasn le fichier productsData.json');
-      res.status(404).json({ message: "Le produit correspondant a cet ID nexiste pas dans productData.json" });
+    if (!productJson) {
+      console.log(
+        "CONTROLLER POST : L ID que vous avez entré nexiste pas dasn le fichier productsData.json"
+      );
+      res
+        .status(404)
+        .json({
+          message:
+            "Le produit correspondant a cet ID nexiste pas dans productData.json",
+        });
       return;
-    }
-    else{
+    } else {
       //Appel a ProductsService pour delete le fichier productsData.json avec le nouveau produit
       await ProductsService.deleteProductById(idBody, productJson);
-      console.log('PRODUCTS CONTROLLER : 204 Le produit a été retiré du fichier productsData.json')
-      res.status(204).json({message: 'Le produit a été retiré du fichier productsData.json'})
+      console.log(
+        "PRODUCTS CONTROLLER : 204 Le produit a été retiré du fichier productsData.json"
+      );
+      res
+        .status(204)
+        .json({
+          message: "Le produit a été retiré du fichier productsData.json",
+        });
       return;
-    }   
-    };
-
+    }
+  };
 }

@@ -12,6 +12,7 @@
     },
     "id": 1,
     "email": "john@gmail.com",
+    "role": "employe",
     "username": "johnd",
     "password": "m38rmF$",
     "name": {
@@ -34,6 +35,7 @@
     },
     "id": 2,
     "email": "morrison@gmail.com",
+    "role": "employe",
     "username": "mor_2314",
     "password": "83r5^_",
     "name": {
@@ -56,6 +58,7 @@
     },
     "id": 3,
     "email": "kevin@gmail.com",
+    "role": "gestionnaire",
     "username": "kevinryan",
     "password": "kev02937@",
     "name": {
@@ -78,6 +81,7 @@
     },
     "id": 4,
     "email": "don@gmail.com",
+    "role": "employe",
     "username": "donero",
     "password": "ewedon",
     "name": {
@@ -100,6 +104,7 @@
     },
     "id": 5,
     "email": "derek@gmail.com",
+    "role": "employe",
     "username": "derek",
     "password": "jklg*_56",
     "name": {
@@ -122,6 +127,7 @@
     },
     "id": 6,
     "email": "david_r@gmail.com",
+    "role": "gestionnaire",
     "username": "david_r",
     "password": "3478*#54",
     "name": {
@@ -144,6 +150,7 @@
     },
     "id": 7,
     "email": "miriam@gmail.com",
+    "role": "employe",
     "username": "snyder",
     "password": "f238&@*$",
     "name": {
@@ -166,6 +173,7 @@
     },
     "id": 8,
     "email": "william@gmail.com",
+    "role": "employe",
     "username": "hopkins",
     "password": "William56$hj",
     "name": {
@@ -188,6 +196,7 @@
     },
     "id": 9,
     "email": "kate@gmail.com",
+    "role": "gestionnaire",
     "username": "kate_h",
     "password": "kfejk@*_",
     "name": {
@@ -210,6 +219,7 @@
     },
     "id": 10,
     "email": "jimmie@gmail.com",
+    "role": "employe",
     "username": "jimmie_k",
     "password": "klein*#%*",
     "name": {
@@ -218,27 +228,5 @@
     },
     "phone": "1-104-001-4567",
     "__v": 0
-  },
-  {
-    "address": {
-      "geolocation": {
-        "lat": "25",
-        "long": "30"
-      },
-      "city": "Montreal",
-      "street": "Radisson",
-      "number": 69,
-      "zipcode": "j6w631"
-    },
-    "id": 11,
-    "email": "miniwheat@post.com",
-    "username": "Dede",
-    "password": "$2a$10$0szV2ZEyExwvEZIH5A3Tr.Fo4JzhKKkS.1jbkw3LsEZO9v5oHrtzi",
-    "name": {
-      "firstname": "doudou",
-      "lastname": "redoudou"
-    },
-    "phone": "514-260-6849",
-    "__v": 44
   }
 ]

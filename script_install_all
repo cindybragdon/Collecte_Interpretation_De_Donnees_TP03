@@ -41,3 +41,8 @@ npm install crypto
 npm install bcryptjs
 
 npm install node-fetch
+
+npm i generate-password
+
+npm install express fs https
+

@@ -79,7 +79,7 @@ export class ProductsService {
 
     //*********************POST NEW PRODUCT*******************//
     public static async addNewProduct(newProduct: ProductsModel): Promise<void> {
-      const filePath = path.join(__dirname, "../../data/productsData.json");
+      const filePath = path.join(__dirname, "data/productsData.json");
   
       try {
         // Lire le fichier JSON existant
@@ -120,7 +120,7 @@ export class ProductsService {
       id: number,
       updatesPost: { title?: string; description?: string; price?: number; inStock?: number }
     ): Promise<ProductsModel | null> {  
-      const filePath = path.join(__dirname, "../../data/productsData.json");
+      const filePath = path.join(__dirname, "data/productsData.json");
     
       // Recherche du produit dans le JSON
       const productJson = await this.findById(id);
@@ -167,7 +167,7 @@ public static async deleteProductById(
   idBody: number,
   deleteThis: { title?: string; description?: string; price?: number; inStock?: number }
 ): Promise<ProductsModel | null> {  
-  const filePath = path.join(__dirname, "../../data/productsData.json");
+  const filePath = path.join(__dirname, "data/productsData.json");
 
   // Lire le fichier JSON existant
   const productsList: Products[] = Array.from(JSON.parse(fs.readFileSync(filePath, { encoding: 'utf8', flag: 'r' })));

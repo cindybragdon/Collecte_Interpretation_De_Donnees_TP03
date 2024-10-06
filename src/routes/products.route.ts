@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { ProductsController } from '../controllers/products.controller';
-import { ProductsService } from '../services/products.service';
+import { Router } from "express";
+import { ProductsController } from "../controllers/products.controller";
+import { ProductsService } from "../services/products.service";
 //import { roleMiddleware } from '../middlewares/roles.middleware';
 //import { verifyToken } from '../middlewares/auth.middleware';
 
@@ -13,7 +13,7 @@ const productsController = new ProductsController();
  *   get:
  *     summary: Retrieve a list of product from this API --> https://fakestoreapi.com/products
  *     description: Retrieve a list of products from the API. Can be used to populate a list of products in your system.
-*     responses:
+ *     responses:
  *       200:
  *         description: A list of products.
  *         content:
@@ -150,19 +150,20 @@ const productsController = new ProductsController();
  *                     type: number
  */
 
-////http://localhost:3000/products        
-router.get('/products', productsController.getAllProducts);
+////http://localhost:3000/products
+router.get("/products", productsController.getAllProducts);
 
 //http://localhost:3000/products?minPrice=0&maxPrice=1000&minInStock=0&maxInStock=20
-router.get('/products/:minPrice?/:maxPrice?/:minInStock?/:maxInStock?', productsController.getAllProducts);
+router.get(
+  "/products/:minPrice?/:maxPrice?/:minInStock?/:maxInStock?",
+  productsController.getAllProducts
+);
 
-router.post('/products', productsController.postNewProduct);
+router.post("/products", productsController.postNewProduct);
 
-router.put('/products/:id', productsController.putProduct);
+router.put("/products/:id", productsController.putProduct);
 
-router.delete('/products/:id', productsController.deleteProduct);
-
-
+router.delete("/products/:id", productsController.deleteProduct);
 
 //router.get('/admin', verifyToken, roleMiddleware(['admin']), UserController.getAdminData);
 

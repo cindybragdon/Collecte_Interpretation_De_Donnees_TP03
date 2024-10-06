@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { UserController } from '../controllers/users.controller';
+import { Router } from "express";
+import { UserController } from "../controllers/users.controller";
 //import { roleMiddleware } from '../middlewares/roles.middleware';
 //import { verifyToken } from '../middlewares/auth.middleware';
 
@@ -72,6 +72,10 @@ const userController = new UserController();
  *           type: string
  *           description: The user’s email address
  *           example: "miniwheat@example.com"
+ *         role:
+ *           type: string
+ *           description: Role that gives acces to certains routes
+ *           example: 'gestionnaire' | 'employe'
  *         username:
  *           type: string
  *           description: The user’s username
@@ -93,9 +97,9 @@ const userController = new UserController();
  *           description: Version key
  *           example: 0
  */
-router.get('/users', userController.getAllUsers);
-router.post('/users/register', userController.userConnected)
-router.get('/users/login', userController.loginByEmail);
+router.get("/users", userController.getAllUsers);
+router.post("/users/register", userController.userConnected);
+router.get("/users/login", userController.loginByEmail);
 
 //router.get('/admin', verifyToken, roleMiddleware(['admin']), UserController.getAdminData);
 
