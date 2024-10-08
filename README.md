@@ -4,7 +4,7 @@
 ## Dans le cadre du cours Collecte et Interpretation de données 420-514-MV
 ## Enseigné par Sara Boumehraz, Cégep Marie-Victorin
 
-## Table des matières
+## :notebook: Table des matières
 
 - [Installation de l'application](#installation-de-lapplication)
 - [API FakeStore](#api-fakestore)
@@ -12,12 +12,12 @@
 - [Documentation de tests Postman](#documentation-de-tests-postman)
 - [Fichier .env](#fichier-env)
 
-## Installation de l'application
+## :wrench: Installation de l'application
 
 _Lancer le script script_install_all afin d'installer toutes les librairies nécessaires au bon fonctionnement de l'application._
 ![image](https://github.com/user-attachments/assets/08113449-b8fb-41ca-8e82-c33d4bf599d3)
 
-## API FakeStore
+## :convenience_store: API FakeStore
 
 _Intégration de l'API FakeStore.  L'API est disponible à l'url suivant :_ <https://fakestoreapi.com/>
 _Les users sont disponibles au endpoint :_ <https://fakestoreapi.com/products>
@@ -29,7 +29,7 @@ _Pour que vos json soit plus agréables, installez l'extention pour Google Chrom
 
 ![image](https://github.com/user-attachments/assets/9d02f6dc-458d-4a7e-8bb4-56a6c3c2260b)
 
-## Documentation Swagger
+## :alien: Documentation Swagger
 
 _Liens et informations sur la documentation générée avec Swagger._
 
@@ -37,9 +37,9 @@ _Liens et informations sur la documentation générée avec Swagger._
 
 _Démarrer l'application en lançant 'npm run start' dans le terminal.  Dans votre navigateur, aller à :_ <https://localhost:3000/v1/api-docs/>
 
-[Retour en haut](#top)
+:arrow_up: [Retour en haut](#top)
 
-## Documentation de tests Postman
+## :mailbox_with_mail: Documentation de tests Postman
 
 _Téléchargez Postman ici :_ <https://www.postman.com/downloads/>
 
@@ -62,4 +62,4 @@ Mettez à jour ou ajoutez de nouvelles données dans la section "Body" de la req
 ## Fichier .env
 _Fichier .env inclus._
 
-[Retour en haut](#top)
+:arrow_up: [Retour en haut](#top)
