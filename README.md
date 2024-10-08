@@ -4,8 +4,8 @@
 ## Dans le cadre du cours Collecte et Interpretation de données 420-514-MV
 ## Enseigné par Sara Boumehraz, Cégep Marie-Victorin
 
-## Table des matières
-:notebook: 
+## :notebook: Table des matières
+ 
 - [Installation de l'application](#installation-de-lapplication)
 - [API FakeStore](#api-fakestore)
 - [Documentation Swagger](#documentation-swagger)
