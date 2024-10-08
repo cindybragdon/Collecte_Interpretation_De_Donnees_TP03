@@ -19,8 +19,8 @@ _Lancer le script script_install_all afin d'installer toutes les librairies néc
 
 ## API FakeStore
 :convenience_store: 
-_Intégration de l'API FakeStore.  L'API est disponible à l'url suivant :_ <https://fakestoreapi.com/>
-_Les users sont disponibles au endpoint :_ <https://fakestoreapi.com/products>
+_Intégration de l'API FakeStore.  L'API est disponible à l'url suivant :_ <https://fakestoreapi.com/><br>
+_Les users sont disponibles au endpoint :_ <https://fakestoreapi.com/products><br>
 _Les produits sont disponibles au endpoint :_ <https://fakestoreapi.com/products>
 
 ![image](https://github.com/user-attachments/assets/0fa6816a-ae32-491b-8949-091c86083d73)
