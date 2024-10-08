@@ -15,6 +15,7 @@ const bcrypt = require("bcryptjs");
 import * as fs from "fs";
 import * as path from "path";
 import { UsersModel } from "../models/users.model";
+import { logger } from "../logger/winston.logger";
 
 export class UserController {
   //*********************GET ALL USERS*******************//
@@ -23,10 +24,6 @@ export class UserController {
     console.log("REFRESH BROWSER On est dans UserController");
     const users = await UsersService.getAllUsers();
     res.json(users);
-  }
-
-  public static async getAdminData(req: Request, res: Response) {
-    res.json({ message: "Données réservées aux administrateurs." });
   }
 
   //*********************REGISTER NEW USER*******************//
@@ -40,7 +37,7 @@ export class UserController {
       )
     );
     const id = usersList.length + 1;
-    console.log(req.body);
+    //console.log(req.body);
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const newUser = new UsersModel(
       req.body.adresse,
@@ -73,6 +70,7 @@ export class UserController {
         console.log(
           "UsersController : Le user a été créé avec succès dans usersData.json"
         );
+        logger.info(`STATUS 201 : ${req.method} ${req.url}`);
         res.status(201).send("Utilisateur enregistré");
       } catch (err) {
         console.error(
@@ -81,12 +79,13 @@ export class UserController {
       }
     }
   };
-  //*********************LOGIN BY EMAIL AND PASSWORD*******************//
+  //*********************LOGIN BY EMAIL AND ROLE*******************//
   public loginByEmail = async (req: Request, res: Response): Promise<void> => {
     try {
       const { email, password } = req.body;
 
       if (!email || !password) {
+        logger.error(`STATUS 400 : ${req.method} ${req.url}`);
         res.status(400).json({
           message:
             "Veuillez renseigner tous les champs, email et mot de passe sont requis.",
@@ -97,6 +96,7 @@ export class UserController {
       const user = await UsersService.findUserEmail(email);
 
       if (!user) {
+        logger.error(`STATUS 401 : ${req.method} ${req.url}`);
         res.status(401).json({ message: "Connexion echouée" });
         return;
       }
@@ -109,22 +109,29 @@ export class UserController {
 
       //Si le mot de passe n'est pas valide
       if (!isInputPasswordValid) {
+        logger.error(`STATUS 401 : ${req.method} ${req.url}`);
         res.status(401).json({ message: "Connexion echouée" });
         return;
       }
 
       //Si password valide, on génère un token JWT qui expire dans 1h
-      const accessToken = jwt.sign({ email: user.email }, "SECRET_KEY", {
+      const accessToken = jwt.sign({ user }, "VIOLETTE", {
         expiresIn: "1h",
       });
 
       // Réponse JSON incluant le token JWT
-      res.status(200).json({ message: "Connexion réussie" + accessToken });
+      logger.info(`STATUS 200 : ${req.method} ${req.url}`);
+      res.status(200).json({ token: accessToken });
       return;
     } catch (error) {
       console.error("Erreur lors du login :", error);
+      logger.error(`STATUS 500 : ${req.method} ${req.url}`);
       res.status(500).json({ message: "Erreur serveur" });
       return;
     }
   };
+  public static async getAdminData(req: Request, res: Response): Promise<void> {
+    res.json({ message: "Données réservées aux administrateurs." });
+    return;
+  }
 }

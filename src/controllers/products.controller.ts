@@ -12,6 +12,7 @@ import { ProductsService } from "../services/products.service";
 import { ProductsModel } from "../models/products.model";
 import { Products } from "../interfaces/products.interface";
 import * as fs from "fs";
+import { logger } from "../logger/winston.logger";
 
 export class ProductsController {
   //*********************GET ALL PRODUCTS*******************//
@@ -51,15 +52,17 @@ export class ProductsController {
         maximumInStockValue
       );
 
-      res
-        .status(200)
-        .json({
-          message: "On est cool, ça passe! Les products sont filtrés ",
-          product,
-        });
+      logger.info(`${req.method} ${req.url}`);
+      res.status(200).json({
+        message: "On est cool, ça passe! Les products sont filtrés ",
+        product,
+      });
       //tests console
       console.log("REFRESH BROWSER On est dans ProductsController");
     } catch (error) {
+      console.log(error);
+      logger.error(`STATUS 400 : ${req.method} ${req.url}`);
+
       res
         .status(400)
         .json({ message: "Erreur lors du get des products filtrés" });
@@ -76,7 +79,7 @@ export class ProductsController {
 
     const productsList: Products[] = Array.from(
       JSON.parse(
-        fs.readFileSync("data/productsData.json", {
+        fs.readFileSync("./data/productData.json", {
           encoding: "utf8",
           flag: "r",
         })
@@ -87,6 +90,20 @@ export class ProductsController {
     const priceRegex = /^[0-9]+(?:\.[0-9]+)?$/;
     const inStockRegex = /^(0|[1-9][0-9]*)$/;
 
+    console.log(
+      "id" +
+        id +
+        "title" +
+        title +
+        "price" +
+        price +
+        "description" +
+        description +
+        "categroy" +
+        category +
+        "inStock" +
+        inStock
+    );
     // Créer une nouvelle instance de ProductsModel avec les données fournies
     const newProduct = new ProductsModel(
       id,
@@ -116,23 +133,20 @@ export class ProductsController {
       console.log(
         "PRODUCTS CONTROLLER : 400 Veuillez renseigner tous les champs de tel que demandé"
       );
-      res
-        .status(400)
-        .json({
-          message: "Veuillez renseigner tous les champs de tel que demandé",
-        });
+      logger.error(`STATUS 400 : ${req.method} ${req.url}`);
+      res.status(400).json({
+        message: "Veuillez renseigner tous les champs de tel que demandé",
+      });
     } else {
       //Appel a ProductsService pour append le fichier productsData.json avec le nouveau produit
       await ProductsService.addNewProduct(newProduct);
       console.log(
         "PRODUCTS CONTROLLER : 200 Le nouveau produit a été ajouté au fichier productsData.json"
       );
-      res
-        .status(200)
-        .json({
-          message:
-            "Le nouveau produit a été ajouté au fichier productsData.json",
-        });
+      logger.info(`STATUS 200: ${req.method} ${req.url}`);
+      res.status(200).json({
+        message: "Le nouveau produit a été ajouté au fichier productsData.json",
+      });
     }
   };
 
@@ -153,11 +167,10 @@ export class ProductsController {
 
     if (isNaN(idBody) || !idBody) {
       console.log("CONTROLLER : L ID entré doit être un entier");
-      res
-        .status(400)
-        .json({
-          message: "Veuillez renseigner tous les champs tels que demandés",
-        });
+      logger.error(`STATUS 400 : ${req.method} ${req.url}`);
+      res.status(400).json({
+        message: "Veuillez renseigner tous les champs tels que demandés",
+      });
       return;
     }
 
@@ -168,17 +181,17 @@ export class ProductsController {
       console.log(
         "CONTROLLER POST : L ID que vous avez entré n existe pas dans le fichier productsData.json"
       );
-      res
-        .status(404)
-        .json({
-          message:
-            "Le produit correspondant à cet ID n'existe pas dans productData.json",
-        });
+      logger.error(`STATUS 404 : ${req.method} ${req.url}`);
+      res.status(404).json({
+        message:
+          "Le produit correspondant à cet ID n'existe pas dans productData.json",
+      });
       return;
     }
 
     // Vérifiez si la catégorie existe
     if (!productJson.category) {
+      logger.error(`STATUS 400 : ${req.method} ${req.url}`);
       console.log("CONTROLLER : Le produit n'a pas de catégorie définie.");
       res.status(400).json({ message: "Le produit doit avoir une catégorie." });
       return; // Ajoutez un retour
@@ -211,11 +224,10 @@ export class ProductsController {
       console.log(
         "PRODUCTS CONTROLLER PUT: 400 Veuillez renseigner tous les champs tels que demandés"
       );
-      res
-        .status(400)
-        .json({
-          message: "Veuillez renseigner tous les champs tels que demandés",
-        });
+      logger.error(`STATUS 400 : ${req.method} ${req.url}`);
+      res.status(400).json({
+        message: "Veuillez renseigner tous les champs tels que demandés",
+      });
       return;
     } else {
       // Appel à ProductsService pour mettre à jour le fichier productsData.json
@@ -223,11 +235,10 @@ export class ProductsController {
       console.log(
         "PRODUCTS CONTROLLER : 200 Le produit a été modifié dans le fichier productsData.json"
       );
-      res
-        .status(200)
-        .json({
-          message: "Le produit a été modifié dans le fichier productsData.json",
-        });
+      logger.info(`STATUS 400 : ${req.method} ${req.url}`);
+      res.status(200).json({
+        message: "Le produit a été modifié dans le fichier productsData.json",
+      });
     }
   };
 
@@ -244,11 +255,10 @@ export class ProductsController {
     // }
     if (isNaN(idBody) || !idBody) {
       console.log("CONTROLLER : L ID entré doit etre un entier");
-      res
-        .status(400)
-        .json({
-          message: "Veuillez renseigner tous les champs de tel que demandé",
-        });
+      logger.error(`STATUS 400 : ${req.method} ${req.url}`);
+      res.status(400).json({
+        message: "Veuillez renseigner tous les champs de tel que demandé",
+      });
       return;
     }
     // Recherche du produit dans le JSON
@@ -258,12 +268,11 @@ export class ProductsController {
       console.log(
         "CONTROLLER POST : L ID que vous avez entré nexiste pas dasn le fichier productsData.json"
       );
-      res
-        .status(404)
-        .json({
-          message:
-            "Le produit correspondant a cet ID nexiste pas dans productData.json",
-        });
+      logger.error(`STATUS 404 : ${req.method} ${req.url}`);
+      res.status(404).json({
+        message:
+          "Le produit correspondant a cet ID nexiste pas dans productData.json",
+      });
       return;
     } else {
       //Appel a ProductsService pour delete le fichier productsData.json avec le nouveau produit
@@ -271,11 +280,10 @@ export class ProductsController {
       console.log(
         "PRODUCTS CONTROLLER : 204 Le produit a été retiré du fichier productsData.json"
       );
-      res
-        .status(204)
-        .json({
-          message: "Le produit a été retiré du fichier productsData.json",
-        });
+      logger.info(`STATUS 400 : ${req.method} ${req.url}`);
+      res.status(204).json({
+        message: "Le produit a été retiré du fichier productsData.json",
+      });
       return;
     }
   };

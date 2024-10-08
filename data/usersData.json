@@ -14,7 +14,7 @@
     "email": "john@gmail.com",
     "role": "employe",
     "username": "johnd",
-    "password": "m38rmF$",
+    "password": {},
     "name": {
       "firstname": "john",
       "lastname": "doe"
@@ -37,7 +37,7 @@
     "email": "morrison@gmail.com",
     "role": "employe",
     "username": "mor_2314",
-    "password": "83r5^_",
+    "password": {},
     "name": {
       "firstname": "david",
       "lastname": "morrison"
@@ -60,7 +60,7 @@
     "email": "kevin@gmail.com",
     "role": "gestionnaire",
     "username": "kevinryan",
-    "password": "kev02937@",
+    "password": {},
     "name": {
       "firstname": "kevin",
       "lastname": "ryan"
@@ -83,7 +83,7 @@
     "email": "don@gmail.com",
     "role": "employe",
     "username": "donero",
-    "password": "ewedon",
+    "password": {},
     "name": {
       "firstname": "don",
       "lastname": "romer"
@@ -106,7 +106,7 @@
     "email": "derek@gmail.com",
     "role": "employe",
     "username": "derek",
-    "password": "jklg*_56",
+    "password": {},
     "name": {
       "firstname": "derek",
       "lastname": "powell"
@@ -129,7 +129,7 @@
     "email": "david_r@gmail.com",
     "role": "gestionnaire",
     "username": "david_r",
-    "password": "3478*#54",
+    "password": {},
     "name": {
       "firstname": "david",
       "lastname": "russell"
@@ -152,7 +152,7 @@
     "email": "miriam@gmail.com",
     "role": "employe",
     "username": "snyder",
-    "password": "f238&@*$",
+    "password": {},
     "name": {
       "firstname": "miriam",
       "lastname": "snyder"
@@ -175,7 +175,7 @@
     "email": "william@gmail.com",
     "role": "employe",
     "username": "hopkins",
-    "password": "William56$hj",
+    "password": {},
     "name": {
       "firstname": "william",
       "lastname": "hopkins"
@@ -198,7 +198,7 @@
     "email": "kate@gmail.com",
     "role": "gestionnaire",
     "username": "kate_h",
-    "password": "kfejk@*_",
+    "password": {},
     "name": {
       "firstname": "kate",
       "lastname": "hale"
@@ -221,7 +221,7 @@
     "email": "jimmie@gmail.com",
     "role": "employe",
     "username": "jimmie_k",
-    "password": "klein*#%*",
+    "password": {},
     "name": {
       "firstname": "jimmie",
       "lastname": "klein"

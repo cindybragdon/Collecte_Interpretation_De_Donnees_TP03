@@ -1,18 +1,26 @@
 import { Router } from "express";
 import { ProductsController } from "../controllers/products.controller";
 import { ProductsService } from "../services/products.service";
-//import { roleMiddleware } from '../middlewares/roles.middleware';
-//import { verifyToken } from '../middlewares/auth.middleware';
+import { roleMiddleware } from "../middlewares/roles.middleware";
+import { verifyToken } from "../middlewares/auth.middleware";
 
 const router = Router();
 const productsController = new ProductsController();
 
 /**
  * @swagger
- * /api/users:
+ * tags:
+ *   name: Products
+ *   description: Product management API
+ */
+
+/**
+ * @swagger
+ * /api/products:
  *   get:
- *     summary: Retrieve a list of product from this API --> https://fakestoreapi.com/products
- *     description: Retrieve a list of products from the API. Can be used to populate a list of products in your system.
+ *     summary: Retrieve a list of products
+ *     description: Fetch a list of products from the local database or external API. Can be used to display products in the application.
+ *     tags: [Products]
  *     responses:
  *       200:
  *         description: A list of products.
@@ -21,136 +29,8 @@ const productsController = new ProductsController();
  *             schema:
  *               type: array
  *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: number
- *                   title:
- *                     type: string
- *                   price:
- *                     type: number
- *                   description:
- *                     type: string
- *                   category:
- *                     type: string
- *                   inStock:
- *                     type: number
- *
- *   post:
- *     summary: Add POST a new product
- *     description: Create a new product in file productsData.json
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               title:
- *                 type: string
- *               price:
- *                 type: number
- *               description:
- *                 type: string
- *               category:
- *                 type: string
- *               inStock:
- *                 type: number
- *     responses:
- *       201:
- *         description: Product created successfully in file productsData.json.
- *       400:
- *         description: Invalid input.
- *
- * /api/products/{id}:
- *   put:
- *     summary: Update a product by ID
- *     description: Update an existing product's details in file productsData.json.
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID of the product to update in file productsData.json.
- *         schema:
- *           type: integer
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               title:
- *                 type: string
- *               price:
- *                 type: number
- *               description:
- *                 type: string
- *               category:
- *                 type: string
- *               inStock:
- *                 type: number
- *     responses:
- *       200:
- *         description: Product updated successfully in file productsData.json.
- *       404:
- *         description: Product not found in file productsData.json.
- *       400:
- *         description: Invalid input.
- *
- *   get:
- *     summary: Retrieve a filtered list of products
- *     description: Retrieve a list of products based on optional filters.
- *     parameters:
- *       - in: query
- *         name: minPrice
- *         required: false
- *         description: Minimum price of the products to retrieve.
- *         schema:
- *           type: number
- *       - in: query
- *         name: maxPrice
- *         required: false
- *         description: Maximum price of the products to retrieve.
- *         schema:
- *           type: number
- *       - in: query
- *         name: minInStock
- *         required: false
- *         description: Minimum stock level of the products to retrieve.
- *         schema:
- *           type: number
- *       - in: query
- *         name: maxInStock
- *         required: false
- *         description: Maximum stock level of the products to retrieve.
- *         schema:
- *           type: number
- *     responses:
- *       200:
- *         description: A filtered list of products in file productsData.json.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: number
- *                   title:
- *                     type: string
- *                   price:
- *                     type: number
- *                   description:
- *                     type: string
- *                   category:
- *                     type: string
- *                   inStock:
- *                     type: number
+ *                 $ref: '#/components/schemas/Product'
  */
-
-////http://localhost:3000/products
 router.get("/products", productsController.getAllProducts);
 
 //http://localhost:3000/products?minPrice=0&maxPrice=1000&minInStock=0&maxInStock=20
@@ -159,12 +39,141 @@ router.get(
   productsController.getAllProducts
 );
 
-router.post("/products", productsController.postNewProduct);
+/**
+ * @swagger
+ * /api/products:
+ *   post:
+ *     summary: Create a new product
+ *     description: Adds a new product to the system and stores it in the productsData.json file.
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Product'
+ *     responses:
+ *       201:
+ *         description: Product created successfully.
+ *       400:
+ *         description: Invalid input data.
+ */
 
-router.put("/products/:id", productsController.putProduct);
+router.post(
+  "/products",
+  verifyToken,
+  roleMiddleware(["gestionnaire"]),
+  productsController.postNewProduct
+);
 
-router.delete("/products/:id", productsController.deleteProduct);
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   put:
+ *     summary: Update a product by ID
+ *     description: Updates the details of an existing product based on the product ID.
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the product to update.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Product'
+ *     responses:
+ *       200:
+ *         description: Product updated successfully.
+ *       404:
+ *         description: Product not found.
+ *       400:
+ *         description: Invalid input data.
+ */
 
-//router.get('/admin', verifyToken, roleMiddleware(['admin']), UserController.getAdminData);
+router.put(
+  "/products/:id",
+  verifyToken,
+  roleMiddleware(["gestionnaire"]),
+  productsController.putProduct
+);
+
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   delete:
+ *     summary: Delete a product by ID
+ *     description: Removes a product from the system by its ID.
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the product to delete.
+ *     responses:
+ *       200:
+ *         description: Product deleted successfully.
+ *       404:
+ *         description: Product not found.
+ */
+
+router.delete(
+  "/products/:id",
+  verifyToken,
+  roleMiddleware(["gestionnaire"]),
+  productsController.deleteProduct
+);
 
 export default router;
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Product:
+ *       type: object
+ *       required:
+ *         - title
+ *         - price
+ *         - description
+ *         - category
+ *         - inStock
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: The auto-generated id of the product.
+ *         title:
+ *           type: string
+ *           description: The title of the product.
+ *         price:
+ *           type: number
+ *           description: The price of the product.
+ *         description:
+ *           type: string
+ *           description: A detailed description of the product.
+ *         category:
+ *           type: string
+ *           description: The category of the product.
+ *         inStock:
+ *           type: number
+ *           description: The quantity of the product in stock.
+ *       example:
+ *         id: 1
+ *         title: "Sample Product"
+ *         price: 19.99
+ *         description: "This is a sample product."
+ *         category: "electronics"
+ *         inStock: 50
+ */

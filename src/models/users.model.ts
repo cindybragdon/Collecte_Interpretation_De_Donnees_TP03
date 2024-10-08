@@ -14,7 +14,7 @@ export class UsersModel implements Users {
     },
     public id: number,
     public email: string,
-    public role: 'gestionnaire' | 'employe',
+    public role: "gestionnaire" | "employe",
     public username: string,
     public password: string,
     public name: {
