@@ -1,3 +1,5 @@
+<a name="top"></a>
+
 # Travail Pratique 01: Développement d'une API RESTful pour la gestion d'inventaire
 ## Dans le cadre du cours Collecte et Interpretation de données 420-514-MV
 ## Enseigné par Sara Boumehraz, Cégep Marie-Victorin
@@ -14,6 +16,8 @@
 
 _Lancer le script script_install_all afin d'installer toutes les librairies nécessaires au bon fonctionnement de l'application._
 ![image](https://github.com/user-attachments/assets/08113449-b8fb-41ca-8e82-c33d4bf599d3)
+
+[Retour en haut](#top)
 
 ## API FakeStore
 
@@ -34,6 +38,8 @@ _Liens et informations sur la documentation générée avec Swagger._
 ![image](https://github.com/user-attachments/assets/5579ea14-45d0-4fae-8218-ad3f2ccf9d66)
 
 _Démarrer l'application en lançant 'npm run start' dans le terminal.  Dans votre navigateur, aller à :_ <https://localhost:3000/v1/api-docs/>
+
+[Retour en haut](#top)
 
 ## Documentation de tests Postman
 
@@ -57,3 +63,5 @@ Mettez à jour ou ajoutez de nouvelles données dans la section "Body" de la req
 
 ## Fichier .env
 _Fichier .env inclus._
+
+[Retour en haut](#top)
