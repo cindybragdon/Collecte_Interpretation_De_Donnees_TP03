@@ -17,8 +17,6 @@
 _Lancer le script script_install_all afin d'installer toutes les librairies nécessaires au bon fonctionnement de l'application._
 ![image](https://github.com/user-attachments/assets/08113449-b8fb-41ca-8e82-c33d4bf599d3)
 
-[Retour en haut](#top)
-
 ## API FakeStore
 
 _Intégration de l'API FakeStore.  L'API est disponible à l'url suivant :_ <https://fakestoreapi.com/>
