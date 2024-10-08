@@ -46,3 +46,7 @@ npm i generate-password
 
 npm install express fs https
 
+#Générer un Certificat Auto-signé (pour le Développement)
+openssl genpkey -algorithm RSA -out key.pem
+openssl req -new -key key.pem -out csr.pem
+openssl x509 -req -days 365 -in csr.pem -signkey key.pem -out cert.pem
