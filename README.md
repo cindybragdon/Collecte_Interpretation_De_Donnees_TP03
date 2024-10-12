@@ -61,11 +61,11 @@ _Étape 1 : Envoyer des requêtes_
 Les API RESTful permettent d'effectuer des opérations CRUD (Créer, Lire, Mettre à jour, Supprimer) en utilisant les méthodes HTTP POST, GET, PUT, et DELETE.
 Cette collection contient chacun de ces types de requêtes. Ouvrez chaque requête et cliquez sur "Envoyer" pour voir ce qui se passe.
 
--Étape 2 : Consulter les réponses_
+_Étape 2 : Consulter les réponses_
 Observez l'onglet des réponses pour vérifier le code de statut (200 OK), le temps de réponse et la taille de la réponse.
 
--Étape 3 : Envoyer de nouvelles données dans le "Body"_
-Mettez à jour ou ajoutez de nouvelles données dans la section "Body" de la requête POST. En général, les données du "Body" sont également utilisées dans la requête PUT._
+_Étape 3 : Envoyer de nouvelles données dans le "Body"_
+Mettez à jour ou ajoutez de nouvelles données dans la section "Body" de la requête POST. En général, les données du "Body" sont également utilisées dans la requête PUT.
 
 ---
 
