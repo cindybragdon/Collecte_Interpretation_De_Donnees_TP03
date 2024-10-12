@@ -12,10 +12,14 @@
 - [Documentation de tests Postman](#documentation-de-tests-postman)
 - [Fichier .env](#fichier-env)
 
+---
+
 ## Installation de l'application
 :wrench: 
 _Lancer le script script_install_all afin d'installer toutes les librairies nécessaires au bon fonctionnement de l'application._
 ![image](https://github.com/user-attachments/assets/08113449-b8fb-41ca-8e82-c33d4bf599d3)
+
+---
 
 ## API FakeStore
 :convenience_store: 
@@ -29,6 +33,8 @@ _Pour que vos json soit plus agréables, installez l'extention pour Google Chrom
 
 ![image](https://github.com/user-attachments/assets/9d02f6dc-458d-4a7e-8bb4-56a6c3c2260b)
 
+---
+
 ## Documentation Swagger
 :alien: 
 _Liens et informations sur la documentation générée avec Swagger._
@@ -38,6 +44,8 @@ _Liens et informations sur la documentation générée avec Swagger._
 _Démarrer l'application en lançant 'npm run start' dans le terminal.  Dans votre navigateur, aller à :_ <https://localhost:3000/v1/api-docs/>
 
 :arrow_up: [Retour en haut](#top)
+
+---
 
 ## Documentation de tests Postman
 :mailbox_with_mail: 
@@ -59,7 +67,11 @@ Observez l'onglet des réponses pour vérifier le code de statut (200 OK), le te
 -Étape 3 : Envoyer de nouvelles données dans le "Body"_
 Mettez à jour ou ajoutez de nouvelles données dans la section "Body" de la requête POST. En général, les données du "Body" sont également utilisées dans la requête PUT._
 
+---
+
 ## Fichier .env
 _Fichier .env inclus._
+
+---
 
 :arrow_up: [Retour en haut](#top)
