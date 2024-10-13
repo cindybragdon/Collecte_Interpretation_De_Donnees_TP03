@@ -11,7 +11,7 @@ const productsController = new ProductsController();
  * @swagger
  * tags:
  *   name: Products
- *   description: Product management API
+ *   description: FakeStore management API
  */
 
 /**

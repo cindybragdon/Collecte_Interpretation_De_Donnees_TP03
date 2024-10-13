@@ -10,7 +10,7 @@ const userController = new UserController();
  * @swagger
  * tags:
  *   name: Users
- *   description: User management API
+ *   description: FakeStore management API
  */
 
 /**

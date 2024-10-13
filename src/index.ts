@@ -22,7 +22,7 @@ const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "User API",
+      title: "FakeStore management API by Cindy Bragdon",
       version: "1.0.0",
       description: "A simple API to manage users",
     },
