@@ -42,7 +42,7 @@ const ProductSchema = new Schema<IProductMongo>({
   },
 });
 
-// Exportation du modèle Mongoose
+
 export default mongoose.model<IProductMongo>('Product', ProductSchema);
 
 

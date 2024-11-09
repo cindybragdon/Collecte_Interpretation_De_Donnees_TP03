@@ -35,19 +35,19 @@ const fetchApiStoredInMongoDB = async () => {
 
     console.log('Produits récupérés depuis l\'API Fake Store :', products);
 
-    // Validation et transformation des produits
+    // Validation des produits
     const validProducts: ProductMongoDocument[] = products
       .map((product) => {
-        // Validation sur le champ title et price
+        // Validation sur le champ title et price.  Les autres données sont facultatives, mais ces champs aident à find() et sont essentiels.
         if (!product.title || !product.price) {
           console.error('Produit incomplet:', product);
           return null;
         }
 
-        // Transformation en un format qui correspond au modèle MongoDB
+        // Format modèle MongoDB
         return {
           id: product.id,
-          title: product.title, // Utilisez title ici, pas name
+          title: product.title, 
           description: product.description,
           category: product.category,
           price: product.price,
@@ -55,7 +55,7 @@ const fetchApiStoredInMongoDB = async () => {
           rating: product.rating,
         };
       })
-      .filter(Boolean) as ProductMongoDocument[]; // Filtre pour ne garder que les produits valides
+      .filter(Boolean) as ProductMongoDocument[]; // Garder les produits valides
 
     // Push les produits valides dans MongoDB
     if (validProducts.length > 0) {
@@ -79,5 +79,4 @@ const insertProductsToMongoDB = async (products: ProductMongoDocument[]) => {
   }
 };
 
-// Exportation de la fonction principale
 export default fetchApiStoredInMongoDB;
