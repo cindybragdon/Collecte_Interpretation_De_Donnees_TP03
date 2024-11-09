@@ -1,6 +1,6 @@
 <a name="top"></a>
 
-# Travail Pratique 01: Développement d'une API RESTful pour la gestion d'inventaire
+# Travail Pratique 03: Développement d'une API RESTful pour la gestion d'inventaire
 ## Dans le cadre du cours Collecte et Interpretation de données 420-514-MV
 ## Enseigné par Sara Boumehraz, Cégep Marie-Victorin
 
