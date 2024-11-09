@@ -1,27 +1,48 @@
-import mongoose, { Schema, Document } from 'mongoose';
-import { ProductMongo } from '../interfaces/productsMongo.interface';
+import mongoose, { Schema } from 'mongoose';
+import { IProductMongo } from '../interfaces/productsMongo.interface';
 
-const productModeleSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        minlength: 3,
-        maxLength: 50,
+const ProductSchema = new Schema<IProductMongo>({
+  id: { type: Number, required: true, unique: true },  
+  title: { 
+    type: String, 
+    required: true, 
+    minlength: 3, 
+    maxlength: 200 
+  },
+  description: { 
+    type: String, 
+    required: true 
+  },
+  category: { 
+    type: String, 
+    required: true 
+  },
+  quantity: { 
+    type: Number, 
+    default: 0 
+  },
+  price: { 
+    type: Number, 
+    required: true, 
+    min: 0 
+  },
+  image: { 
+    type: String, 
+    required: true 
+  },
+  rating: {
+    rate: { 
+      type: Number, 
+      required: true 
     },
-    description: {
-        type: String,
+    count: { 
+      type: Number, 
+      required: true 
     },
-    category: {
-        type: String,
-    },
-    quantity: {
-        type: Number,
-        min : 0,
-    },
-    price: {
-        type: Number,
-        min: 0
-    }
+  },
 });
 
-export const ProductModeleSchema = mongoose.model<ProductMongo>('Product', productModeleSchema);
+// Exportation du modèle Mongoose
+export default mongoose.model<IProductMongo>('Product', ProductSchema);
+
 

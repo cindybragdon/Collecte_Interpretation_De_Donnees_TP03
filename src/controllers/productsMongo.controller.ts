@@ -1,4 +1,4 @@
-import { ProductModeleSchema } from '../models/productMongo.model';
+import ProductModeleSchema from "../models/productMongo.model";
 import { Request, Response } from 'express';
 
 export class ProductsMongoController {

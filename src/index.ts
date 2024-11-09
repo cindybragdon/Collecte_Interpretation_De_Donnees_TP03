@@ -1,15 +1,12 @@
 import express, { NextFunction, Request, Response } from "express";
 import userRoutes from "./routes/users.route";
 import productRoutes from "./routes/products.route";
-import { UsersService } from "./services/users.service";
-import { ProductsService } from "./services/products.service";
+import productMongoRoutes from './routes/productsMongo.route';
 import { fetchProductsFromAPi } from "./fetchProductsApi";
 import { fetchUsersFromAPi } from "./fetchUsersApi";
 import { errorMiddleware } from "./middlewares/error.middleware";
-// ***** imports mongoDb *****
-import productMongoRoutes from './routes/productsMongo.route';
-import {connectToDatabase} from './config/database';
-
+import fetchApiStoredInMongoDB from './fetchApiStoredInMongoDB';
+import mongoose from 'mongoose';
 
 const path = require("path");
 const fs = require("fs");
@@ -21,7 +18,7 @@ const port = 3000;
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsdoc = require("swagger-jsdoc");
 
-// Définir les options de Swagger
+// Configuration de Swagger
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
@@ -31,53 +28,58 @@ const swaggerOptions = {
       description: "A simple API to manage users",
     },
   },
-  apis: ["./src/routes/*.ts"], // Fichier où les routes de l'API sont définies
+  apis: ["./src/routes/*.ts"],
 };
 
-// Générer la documentation à partir des options
+// Générer et servir la documentation Swagger
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
-
-// Servir la documentation Swagger via '/api-docs'
 app.use("/v1/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Middleware de login
+// Middleware de log
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
 });
 
-// Middleware de parsing du JSON
+// Middleware de parsing JSON
 app.use(express.json());
 
 // Route de base
 app.get("/v1", (req: Request, res: Response) => {
-  res.send("Hello, site HTTPS securisé!");
+  res.send("Hello, site HTTPS sécurisé!");
 });
 
-// Charger le certificat et la clé
+// Charger le certificat et la clé pour HTTPS
 const options = {
-  key: fs.readFileSync(path.join(__dirname, "key.pem")),
-  cert: fs.readFileSync(path.join(__dirname, "cert.pem")),
+  key: fs.readFileSync(path.join(__dirname, "../src/key.pem")),
+  cert: fs.readFileSync(path.join(__dirname, "../src/cert.pem")),
 };
 
+// Utiliser les routes pour les utilisateurs et les produits
 app.use("/", userRoutes);
 app.use("/", productRoutes);
 
-// ***** route mongoDb *****
-app.use("/", productMongoRoutes);
+// Routes MongoDB
+app.use("/api/mongodb", productMongoRoutes);
 
 // Middleware de gestion des erreurs
 app.use("/", errorMiddleware);
 
-// Démarrage du serveur
+// Connexion à MongoDB
+const MONGO_URI = 'mongodb+srv://cindybragdon:abc-123@cluster0.k9lfh.mongodb.net/mongoDb_Api_RESTful_PROD';
+mongoose.connect(MONGO_URI)
+  .then(() => console.log("Index : Connecté à MongoDB!!"))
+  .catch((err) => console.error("Index : Erreur de connexion MongoDB :", err));
+
+// Appeler le fetch pour peupler MongoDB avec les produits de l'API Fake Store au démarrage
+fetchApiStoredInMongoDB()
+  .then(() => console.log("Index : Produits importés de l'API Fake Store"))
+  .catch((error) => console.error("Index : Erreur lors de l'importation des produits :", error));
+
+// Démarrage du serveur en HTTPS
 https.createServer(options, app).listen(port, () => {
   console.log(`Serveur en écoute sur <https://localhost>:${port}`);
   console.log("DÉMARRAGE SERVEUR On est dans index");
   fetchProductsFromAPi();
   fetchUsersFromAPi();
 });
-
-// ***** Connexion à la bd mongoDb *****
-connectToDatabase();
-
-
