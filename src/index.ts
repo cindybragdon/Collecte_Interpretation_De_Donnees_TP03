@@ -6,6 +6,10 @@ import { ProductsService } from "./services/products.service";
 import { fetchProductsFromAPi } from "./fetchProductsApi";
 import { fetchUsersFromAPi } from "./fetchUsersApi";
 import { errorMiddleware } from "./middlewares/error.middleware";
+// ***** imports mongoDb *****
+import productMongoRoutes from './routes/productsMongo.route';
+import {connectToDatabase} from './config/database';
+
 
 const path = require("path");
 const fs = require("fs");
@@ -59,6 +63,9 @@ const options = {
 app.use("/", userRoutes);
 app.use("/", productRoutes);
 
+// ***** route mongoDb *****
+app.use("/", productMongoRoutes);
+
 // Middleware de gestion des erreurs
 app.use("/", errorMiddleware);
 
@@ -69,3 +76,8 @@ https.createServer(options, app).listen(port, () => {
   fetchProductsFromAPi();
   fetchUsersFromAPi();
 });
+
+// ***** Connexion à la bd mongoDb *****
+connectToDatabase();
+
+
