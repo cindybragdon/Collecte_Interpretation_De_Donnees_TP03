@@ -33,14 +33,20 @@ const fetchApiStoredInMongoDB = async () => {
     const response = await fetch('https://fakestoreapi.com/products');
     const products: Product[] = await response.json();
 
-    console.log('Produits récupérés depuis l\'API Fake Store :', products);
+    console.log('Fetch Mongo : Produits récupérés depuis l\'API Fake Store :', products);
 
     // Validation des produits
     const validProducts: ProductMongoDocument[] = products
       .map((product) => {
         // Validation sur le champ title et price.  Les autres données sont facultatives, mais ces champs aident à find() et sont essentiels.
+
+        if (!(product.title.length >= 3 && product.title.length <= 50)) {
+          console.error('Fetch Mongo : Produit non valide:', product);
+          return null;
+        }
+
         if (!product.title || !product.price) {
-          console.error('Produit incomplet:', product);
+          console.error('Fetch Mongo : Produit incomplet:', product);
           return null;
         }
 
@@ -61,21 +67,23 @@ const fetchApiStoredInMongoDB = async () => {
     if (validProducts.length > 0) {
       await insertProductsToMongoDB(validProducts);
     } else {
-      console.log('Aucun produit valide à insérer.');
+      console.log('Fetch Mongo : Aucun produit valide à insérer.');
     }
   } catch (error) {
-    console.error('Erreur lors de la récupération des produits :', error);
+    console.error('Fetch Mongo : Erreur lors de la récupération des produits :', error);
   }
 };
 
 // Fonction push des produits dans MongoDB
 const insertProductsToMongoDB = async (products: ProductMongoDocument[]) => {
   try {
+     // Delete Many vide la collection pour éviter les doublons
+     await ProductMongo.deleteMany({});
     // Insert all products dans MongoDB
     await ProductMongo.insertMany(products);  // Utilisez votre modèle MongoDB pour l'insertion
-    console.log('MongoDB populé avec succès!');
+    console.log('Fetch Mongo : MongoDB populé avec succès!');
   } catch (error) {
-    console.error('Erreur lors de la population des produits dans MongoDB :', error);
+    console.error('Fetch Mongo : Erreur lors de la population des produits dans MongoDB :', error);
   }
 };
 

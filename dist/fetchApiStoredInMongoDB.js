@@ -4,25 +4,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_fetch_1 = __importDefault(require("node-fetch"));
-const productMongo_model_1 = __importDefault(require("./models/productMongo.model")); // Assurez-vous que ProductMongo est bien défini et importé
+const productMongo_model_1 = __importDefault(require("./models/productMongo.model"));
 // Fetch des produits sur l'API
 const fetchApiStoredInMongoDB = async () => {
     try {
         const response = await (0, node_fetch_1.default)('https://fakestoreapi.com/products');
         const products = await response.json();
-        console.log('Produits récupérés depuis l\'API Fake Store :', products);
-        // Validation et transformation des produits
+        console.log('Fetch Mongo : Produits récupérés depuis l\'API Fake Store :', products);
+        // Validation des produits
         const validProducts = products
             .map((product) => {
-            // Validation sur le champ title et price
-            if (!product.title || !product.price) {
-                console.error('Produit incomplet:', product);
+            // Validation sur le champ title et price.  Les autres données sont facultatives, mais ces champs aident à find() et sont essentiels.
+            if (!(product.title.length >= 3 && product.title.length <= 50)) {
+                console.error('Fetch Mongo : Produit non valide:', product);
                 return null;
             }
-            // Transformation en un format qui correspond au modèle MongoDB
+            if (!product.title || !product.price) {
+                console.error('Fetch Mongo : Produit incomplet:', product);
+                return null;
+            }
+            // Format modèle MongoDB
             return {
                 id: product.id,
-                title: product.title, // Utilisez title ici, pas name
+                title: product.title,
                 description: product.description,
                 category: product.category,
                 price: product.price,
@@ -30,29 +34,30 @@ const fetchApiStoredInMongoDB = async () => {
                 rating: product.rating,
             };
         })
-            .filter(Boolean); // Filtre pour ne garder que les produits valides
+            .filter(Boolean); // Garder les produits valides
         // Push les produits valides dans MongoDB
         if (validProducts.length > 0) {
             await insertProductsToMongoDB(validProducts);
         }
         else {
-            console.log('Aucun produit valide à insérer.');
+            console.log('Fetch Mongo : Aucun produit valide à insérer.');
         }
     }
     catch (error) {
-        console.error('Erreur lors de la récupération des produits :', error);
+        console.error('Fetch Mongo : Erreur lors de la récupération des produits :', error);
     }
 };
 // Fonction push des produits dans MongoDB
 const insertProductsToMongoDB = async (products) => {
     try {
+        // Delete Many vide la collection pour éviter les doublons
+        await productMongo_model_1.default.deleteMany({});
         // Insert all products dans MongoDB
         await productMongo_model_1.default.insertMany(products); // Utilisez votre modèle MongoDB pour l'insertion
-        console.log('MongoDB populé avec succès!');
+        console.log('Fetch Mongo : MongoDB populé avec succès!');
     }
     catch (error) {
-        console.error('Erreur lors de la population des produits dans MongoDB :', error);
+        console.error('Fetch Mongo : Erreur lors de la population des produits dans MongoDB :', error);
     }
 };
-// Exportation de la fonction principale
 exports.default = fetchApiStoredInMongoDB;

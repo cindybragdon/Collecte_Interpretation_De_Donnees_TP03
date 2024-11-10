@@ -7,15 +7,13 @@ const ProductSchema = new Schema<IProductMongo>({
     type: String, 
     required: true, 
     minlength: 3, 
-    maxlength: 200 
+    maxlength: 50 
   },
   description: { 
     type: String, 
-    required: true 
   },
   category: { 
     type: String, 
-    required: true 
   },
   quantity: { 
     type: Number, 
@@ -28,16 +26,13 @@ const ProductSchema = new Schema<IProductMongo>({
   },
   image: { 
     type: String, 
-    required: true 
   },
   rating: {
     rate: { 
       type: Number, 
-      required: true 
     },
     count: { 
       type: Number, 
-      required: true 
     },
   },
 });

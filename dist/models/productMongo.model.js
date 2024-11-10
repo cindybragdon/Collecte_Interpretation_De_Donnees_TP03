@@ -24,26 +24,23 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-// Définition du schéma ProductSchema
 const ProductSchema = new mongoose_1.Schema({
-    id: { type: Number, required: true, unique: true }, // id doit être unique
+    id: { type: Number, required: true, unique: true },
     title: {
         type: String,
         required: true,
         minlength: 3,
-        maxlength: 200
+        maxlength: 50
     },
     description: {
         type: String,
-        required: true
     },
     category: {
         type: String,
-        required: true
     },
     quantity: {
         type: Number,
-        default: 0 // Si vous ne récupérez pas quantity, définir une valeur par défaut
+        default: 0
     },
     price: {
         type: Number,
@@ -52,18 +49,14 @@ const ProductSchema = new mongoose_1.Schema({
     },
     image: {
         type: String,
-        required: true
     },
     rating: {
         rate: {
             type: Number,
-            required: true
         },
         count: {
             type: Number,
-            required: true
         },
     },
 });
-// Exportation du modèle Mongoose
 exports.default = mongoose_1.default.model('Product', ProductSchema);
