@@ -14,7 +14,6 @@ export class ProductsMongoController {
                 console.error(error);
                 res.status(500).json({ message: error.message });
             } else {
-                // Cas où `error` n'est pas une instance de `Error` (ex. erreurs personnalisées)
                 res.status(500).json({ message: "ProductMongo.Controller : Erreur inconnue" });
             }
         }
