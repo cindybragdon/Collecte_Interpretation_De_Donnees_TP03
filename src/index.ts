@@ -77,9 +77,24 @@ fetchApiStoredInMongoDB()
   .catch((error) => console.error("Index : Erreur lors de l'importation des produits :", error));
 
 // Démarrage du serveur en HTTPS
+async function populateJsonIfEmpty() {
+  const productsFilePath = path.join(__dirname, "productsData.json");
+  const usersFilePath = path.join(__dirname, "usersData.json");
+
+  if (!fs.existsSync(productsFilePath) || fs.readFileSync(productsFilePath, "utf-8").trim() === "") {
+    await fetchProductsFromAPi();
+  }
+  
+  if (!fs.existsSync(usersFilePath) || fs.readFileSync(usersFilePath, "utf-8").trim() === "") {
+    await fetchUsersFromAPi();
+  }
+}
+
+// Démarrage du serveur en HTTPS
 https.createServer(options, app).listen(port, () => {
   console.log(`Serveur en écoute sur <https://localhost>:${port}`);
-  console.log("DÉMARRAGE SERVEUR On est dans index");
-  fetchProductsFromAPi();
-  fetchUsersFromAPi();
+  populateJsonIfEmpty()
+    .then(() => console.log("Vérification des fichiers JSON complétée."))
+    .catch((error) => console.error("Erreur lors de la vérification des fichiers JSON :", error));
+
 });
