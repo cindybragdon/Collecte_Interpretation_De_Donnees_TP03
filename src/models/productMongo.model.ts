@@ -17,12 +17,18 @@ const ProductSchema = new Schema<IProductMongo>({
   },
   quantity: { 
     type: Number, 
-    default: 0 
+    default: 0,
+    validator: (value: number) => Number.isInteger(value) && value > 0,
+      message: 'La quantité doit être un entier positif.'
+    
   },
   price: { 
     type: Number, 
     required: true, 
-    min: 0 
+    validate: {
+      validator: (value: number) => Number.isInteger(value) && value > 0,
+      message: 'La quantité doit être un entier positif.'
+    },
   },
   image: { 
     type: String, 
