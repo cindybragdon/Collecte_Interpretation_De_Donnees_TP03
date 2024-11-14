@@ -12,7 +12,7 @@ const UserSchema = new Schema<IUserMongo>({
       validator: function (email: string) {
         return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
       },
-      message: (props: any) => `${props.value} format d'email invalide.`,
+      message: (props) => `${props.value} format d'email invalide.`,
     },
   },
   role: { type: String, enum: ['gestionnaire', 'employe'], required: true },
