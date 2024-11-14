@@ -1,17 +1,8 @@
-// Le CONTROLLER est le point d'entrée des requêtes HTTP. Il reçoit
-// les requêtes, vérifie les paramètres d'entrée (ex. l'ID du produit),
-//  et utilise le service pour effectuer des opérations.
-// Le contrôleur ne devrait pas contenir de logique métier complexe.
-// Il devrait principalement déléguer les tâches au service.
-// Par exemple, dans ton ProductsController, tu aurais une fonction
-// qui récupère l'ID d'une requête, appelle la méthode findById
-// du service, puis renvoie la réponse au client.
-
 import { Request, Response } from "express";
 import { UsersService } from "../services/users.service";
 import { Users } from "../interfaces/users.interface";
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import * as fs from "fs";
 import * as path from "path";
 import { UsersModel } from "../models/users.model";
@@ -52,11 +43,11 @@ export class UserController {
     );
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const isValidEmail = (email: string): boolean => {
+    const isValidEmail = (): boolean => {
       return emailRegex.test(req.body.email);
     };
 
-    if (isValidEmail(req.body.email)) {
+    if (isValidEmail()) {
       usersList.push(newUser);
       const usersListModified = JSON.stringify(usersList, null, 2);
 
@@ -72,9 +63,9 @@ export class UserController {
         );
         logger.info(`STATUS 201 : ${req.method} ${req.url}`);
         res.status(201).send("Utilisateur enregistré");
-      } catch (err) {
+      } catch (error) {
         console.error(
-          "UsersController : Erreur lors de lécriture du nouveau user dans usersData.json"
+          "UsersController : Erreur lors de lécriture du nouveau user dans usersData.json",error
         );
       }
     }
