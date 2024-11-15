@@ -28,7 +28,7 @@ interface ProductMongoDocument {
 }
 
 // Fetch des produits sur l'API
-const fetchApiStoredInMongoDB = async () => {
+const fetchPRODUCTSApiStoredInMongoDB = async () => {
   try {
     const response = await fetch('https://fakestoreapi.com/products');
     const products: Product[] = await response.json();
@@ -80,11 +80,11 @@ const insertProductsToMongoDB = async (products: ProductMongoDocument[]) => {
      // Delete Many vide la collection pour éviter les doublons
      await ProductMongo.deleteMany({});
     // Insert all products dans MongoDB
-    await ProductMongo.insertMany(products);  // Utilisez votre modèle MongoDB pour l'insertion
-    console.log('Fetch Mongo : MongoDB populé avec succès!');
+    await ProductMongo.insertMany(products);  
+    console.log('Fetch Mongo : MongoDB populé de produits avec succès!');
   } catch (error) {
     console.error('Fetch Mongo : Erreur lors de la population des produits dans MongoDB :', error);
   }
 };
 
-export default fetchApiStoredInMongoDB;
+export default fetchPRODUCTSApiStoredInMongoDB;

@@ -5,7 +5,9 @@ import productMongoRoutes from './routes/productsMongo.route';
 import { fetchProductsFromAPi } from "./fetchProductsApi";
 import { fetchUsersFromAPi } from "./fetchUsersApi";
 import { errorMiddleware } from "./middlewares/error.middleware";
-import fetchApiStoredInMongoDB from './fetchApiStoredInMongoDB';
+import fetchPRODUCTSApiStoredInMongoDB from './fetchPRODUCTSApiStoredInMongoDB';
+import fetchUSERSApiStoredInMongoDB from './fetchPRODUCTSApiStoredInMongoDB';
+
 import mongoose from 'mongoose';
 
 const path = require("path");
@@ -72,9 +74,14 @@ mongoose.connect(MONGO_URI)
   .catch((err) => console.error("Index : Erreur de connexion MongoDB :", err));
 
 // Appeler le fetch pour peupler MongoDB avec les produits de l'API Fake Store au démarrage
-fetchApiStoredInMongoDB()
+fetchPRODUCTSApiStoredInMongoDB()
   .then(() => console.log("Index : Produits importés de l'API Fake Store"))
   .catch((error) => console.error("Index : Erreur lors de l'importation des produits :", error));
+
+// Appeler le fetch pour peupler MongoDB avec les users de l'API Fake Store au démarrage
+fetchUSERSApiStoredInMongoDB()
+  .then(() => console.log("Index : Userss importés de l'API Fake Store"))
+  .catch((error) => console.error("Index : Erreur lors de l'importation des users :", error));
 
 // Démarrage du serveur en HTTPS
 async function populateJsonIfEmpty() {
