@@ -8,7 +8,7 @@ import bcrypt from "bcryptjs";
 
 
 export class UserMongoController {
-  //*********************CREATE NEW USERS*******************//
+  //*********************CREATE NEW USER*******************//
   public async createNewUser(req: Request, res: Response): Promise<void> {
     try {
       const newUser = await UsersMongoService.createNewUser(req.body);

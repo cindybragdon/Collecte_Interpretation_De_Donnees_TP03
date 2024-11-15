@@ -120,9 +120,10 @@ const usersMongoController = new UserMongoController();
  */
 
 
-router.post('/v2/users', usersMongoController.createNewUser);
 
-router.post('/v2/users', usersMongoController.userLogin);
+router.post('/v2/users/register', usersMongoController.createNewUser);
+
+router.post('/v2/users/login', usersMongoController.userLogin);
 
 
 export default router;

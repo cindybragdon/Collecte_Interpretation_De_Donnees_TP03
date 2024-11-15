@@ -22,7 +22,7 @@ beforeAll(async () => {
   //verifyToken()
 });
 
-// Après tous les tests : déconnecte Mongoose et stop serveur In Memory MongoDB
+// Avant tous les tests : config In Memory MongoDB et connecte Mongoose
 afterAll(async () => {
   await mongoose.disconnect();
   await mongoServer.stop();
@@ -70,7 +70,7 @@ describe('User Model Tests', () => {
     expect(User.findOne).toHaveBeenCalledWith({ email: 'miniwheat@gmail.com' });
   });
 
-  
+
   //********************* GENERATE JWT TOKEN WITH MOCK *******************//
   test('should generate a JWT token with correct payload and expiration', () => {
     const mockUser = { _id: '123456789', role: 'gestionnaire' };
