@@ -16,13 +16,13 @@ const UserSchema = new Schema<IUserMongo>({
     },
   },
   role: { type: String, enum: ['gestionnaire', 'employe'], required: true },
-  username: { type: String, required: true, unique: true },
+  username: { type: String, required: false, unique: true },
   password: { type: String, required: true },
   name: {
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
   },
-  phone: { type: String, required: true }
+  phone: { type: String, required: false }
 });
 
 export default mongoose.model<IUserMongo>('User', UserSchema);

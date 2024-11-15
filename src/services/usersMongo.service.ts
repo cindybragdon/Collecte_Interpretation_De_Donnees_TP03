@@ -33,9 +33,9 @@ export class UsersMongoService {
   }
 
   //*********************GENERATE JWT TOKEN*******************//
-  public static generateToken(user: IUserMongo): string {
-    return jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, {
-      expiresIn: '1h',
-    });
-  }
+  
+static generateToken(user: { _id: string; role: string }): string {
+  return jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
+}
+
 }
