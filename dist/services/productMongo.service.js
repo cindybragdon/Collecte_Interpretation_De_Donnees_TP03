@@ -5,80 +5,57 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductMongoService = void 0;
 const productMongo_model_1 = __importDefault(require("../models/productMongo.model"));
+// Regex adjustments to handle floating point prices and quantities
 const titleRegex = /^.{3,50}$/;
-const priceRegex = /^(0|[1-9][0-9]*)$/;
-const quantityRegex = /^(0|[1-9][0-9]*)$/;
+const priceRegex = /^\d+(\,\d+)?$/;
+const quantityRegex = /^\d+(\.\d+)?$|^0(\.\d+)?$/;
 class ProductMongoService {
-    // Méthode pour récupérer tous les produits
-    static async getAllProducts() {
-        try {
-            return await productMongo_model_1.default.find();
-        }
-        catch (error) {
-            throw new Error("ProductMongo.Service : Erreur lors de la récupération des produits");
-        }
+    static async getAllProducts(minPrice = 0, maxPrice = 999999999999, minStock = 0, maxStock = 999999999999) {
+        return await productMongo_model_1.default.find({
+            price: { $gte: minPrice, $lte: maxPrice },
+            quantity: { $gte: minStock, $lte: maxStock }
+        });
     }
-    // Méthode pour créer un nouveau produit
     static async createProduct(data) {
-        const { title, price, quantity } = data;
-        // Validation des champs
+        const { title, price, quantity = 0, description, category, image, rating } = data;
         if (!title || !titleRegex.test(title)) {
-            throw new Error('ProductMongo.Service : Le champ "title" doit être renseigné et contenir entre 3 et 50 caractères.');
+            throw new Error('Le champ "title" doit être renseigné et contenir entre 3 et 50 caractères.');
         }
-        if (!price || !priceRegex.test(price)) {
-            throw new Error('ProductMongo.Service : Le champ "price" doit être renseigné et être un entier positif.');
+        if (price === undefined || !priceRegex.test(price)) {
+            throw new Error('Le champ "price" doit être un nombre positif.');
         }
-        if (quantity && !quantityRegex.test(quantity)) {
-            throw new Error('ProductMongo.Service : Le champ "quantity" doit être un entier positif.');
+        if (quantity !== undefined && !quantityRegex.test(quantity)) {
+            throw new Error('Le champ "quantity" doit être un entier positif.');
         }
-        const { description, category, image, rating } = data;
         const productToAdd = new productMongo_model_1.default({
             title, price, description, category, image, rating, quantity
         });
-        try {
-            return await productToAdd.save();
-        }
-        catch (error) {
-            throw new Error("ProductMongo.Service : Erreur lors de l'ajout du produit");
-        }
+        return await productToAdd.save();
     }
-    // Méthode pour mettre à jour un produit existant
     static async updateProduct(id, data) {
         const { title, price, quantity } = data;
-        // Validation des champs
         if (title && !titleRegex.test(title)) {
-            throw new Error('ProductMongo.Service : Le champ "title" doit être contenu entre 3 et 50 caractères.');
+            throw new Error('Le champ "title" doit contenir entre 3 et 50 caractères.');
         }
-        if (price && !priceRegex.test(price)) {
-            throw new Error('ProductMongo.Service : Le champ "price" doit être un entier positif.');
+        if (price !== undefined && !priceRegex.test(price)) {
+            throw new Error('Le champ "price" doit être un nombre positif.');
         }
-        if (quantity && !quantityRegex.test(quantity)) {
-            throw new Error('ProductMongo.Service : Le champ "quantity" doit être un entier positif.');
+        if (quantity !== undefined && !quantityRegex.test(quantity)) {
+            throw new Error('Le champ "quantity" doit être un entier positif.');
         }
-        try {
-            const product = await productMongo_model_1.default.findById(id);
-            if (!product)
-                throw new Error("ProductMongo.Service : Produit non trouvé");
-            // Mettre à jour les champs
-            Object.assign(product, data);
-            return await product.save();
-        }
-        catch (error) {
-            throw new Error("ProductMongo.Service : Erreur lors de la mise à jour du produit");
-        }
+        return await productMongo_model_1.default.findByIdAndUpdate(id, data, { new: true });
     }
-    // Méthode pour supprimer un produit
+    static async getProductById(id) {
+        return await productMongo_model_1.default.findById(id);
+    }
     static async deleteProduct(id) {
-        try {
-            const product = await productMongo_model_1.default.findById(id);
-            if (!product)
-                throw new Error("ProductMongo.Service : Produit non trouvé");
-            await productMongo_model_1.default.deleteOne({ _id: id });
-            return id;
-        }
-        catch (error) {
-            throw new Error("ProductMongo.Service : Erreur lors de la suppression du produit");
-        }
+        const product = await productMongo_model_1.default.findById(id);
+        if (!product)
+            throw new Error("Produit non trouvé");
+        const result = await productMongo_model_1.default.deleteOne({ _id: id });
+        if (result.deletedCount === 0)
+            throw new Error("Échec de la suppression du produit");
+        return id;
     }
 }
 exports.ProductMongoService = ProductMongoService;

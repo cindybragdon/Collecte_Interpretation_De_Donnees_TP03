@@ -9,12 +9,18 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const config_1 = require("./config");
 const connectToDatabase = async () => {
     try {
-        await mongoose_1.default.connect(config_1.config.DB_URI || "900");
-        console.log(`database.js : Vous êtes connectés à MongoDB (${process.env.NODE_ENV} environment)`);
+        const dbUri = config_1.config.NODE_ENV === 'production'
+            ? config_1.config.DB_URI_PROD
+            : config_1.config.NODE_ENV === 'test'
+                ? config_1.config.DB_URI_TEST
+                : config_1.config.DB_URI_DEV;
+        // Connexion sans les options dépréciées
+        await mongoose_1.default.connect(dbUri);
+        console.log(`Connected to MongoDB in ${process.env.NODE_ENV} environment`);
     }
     catch (err) {
-        console.error('database.js : Erreur de connexion à MongoDB', err);
-        process.exit(1);
+        console.error('Database connection error:', err);
+        process.exit(1); // Terminer l'application si la connexion échoue
     }
 };
 exports.connectToDatabase = connectToDatabase;

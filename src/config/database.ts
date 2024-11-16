@@ -2,12 +2,20 @@
 import mongoose from 'mongoose';
 import { config } from './config';
 
-export const connectToDatabase = async () => {
+export const connectToDatabase = async (): Promise<void> => {
   try {
-    await mongoose.connect(config.DB_URI || "900");
-    console.log(`database.js : Vous êtes connectés à MongoDB (${process.env.NODE_ENV} environment)`);
+    const dbUri = config.NODE_ENV === 'production'
+      ? config.DB_URI_PROD
+      : config.NODE_ENV === 'test'
+      ? config.DB_URI_TEST
+      : config.DB_URI_DEV;
+
+    // Connexion sans les options dépréciées
+    await mongoose.connect(dbUri);
+
+    console.log(`Connected to MongoDB in ${process.env.NODE_ENV} environment`);
   } catch (err) {
-    console.error('database.js : Erreur de connexion à MongoDB', err);
-    process.exit(1); 
+    console.error('Database connection error:', err);
+    process.exit(1); // Terminer l'application si la connexion échoue
   }
 };

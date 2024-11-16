@@ -5,7 +5,7 @@ export interface IProductMongo extends Document {
   title: string;
   description: string;
   category: string;
-  quantity?: number;
+  quantity?: number; 
   price: number;
   image: string;
   rating: {

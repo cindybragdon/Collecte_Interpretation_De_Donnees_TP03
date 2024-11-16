@@ -1,12 +1,4 @@
 "use strict";
-// Le CONTROLLER est le point d'entrée des requêtes HTTP. Il reçoit
-// les requêtes, vérifie les paramètres d'entrée (ex. l'ID du produit),
-//  et utilise le service pour effectuer des opérations.
-// Le contrôleur ne devrait pas contenir de logique métier complexe.
-// Il devrait principalement déléguer les tâches au service.
-// Par exemple, dans ton ProductsController, tu aurais une fonction
-// qui récupère l'ID d'une requête, appelle la méthode findById
-// du service, puis renvoie la réponse au client.
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -30,11 +22,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const users_service_1 = require("../services/users.service");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const users_model_1 = require("../models/users.model");
@@ -49,13 +44,13 @@ class UserController {
             })));
             const id = usersList.length + 1;
             //console.log(req.body);
-            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            const hashedPassword = await bcryptjs_1.default.hash(req.body.password, 10);
             const newUser = new users_model_1.UsersModel(req.body.adresse, id, req.body.email, req.body.role, req.body.username, hashedPassword, req.body.name, req.body.phone, req.body.__v);
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            const isValidEmail = (email) => {
+            const isValidEmail = () => {
                 return emailRegex.test(req.body.email);
             };
-            if (isValidEmail(req.body.email)) {
+            if (isValidEmail()) {
                 usersList.push(newUser);
                 const usersListModified = JSON.stringify(usersList, null, 2);
                 const filePath = path.join(__dirname, "../../data/usersData.json");
@@ -69,8 +64,8 @@ class UserController {
                     winston_logger_1.logger.info(`STATUS 201 : ${req.method} ${req.url}`);
                     res.status(201).send("Utilisateur enregistré");
                 }
-                catch (err) {
-                    console.error("UsersController : Erreur lors de lécriture du nouveau user dans usersData.json");
+                catch (error) {
+                    console.error("UsersController : Erreur lors de lécriture du nouveau user dans usersData.json", error);
                 }
             }
         };
@@ -92,7 +87,7 @@ class UserController {
                     return;
                 }
                 // Comparer le mot de passe req.body avec le mot de passe stocké dans usersData.json
-                const isInputPasswordValid = await bcrypt.compare(password, user.password);
+                const isInputPasswordValid = await bcryptjs_1.default.compare(password, user.password);
                 //Si le mot de passe n'est pas valide
                 if (!isInputPasswordValid) {
                     winston_logger_1.logger.error(`STATUS 401 : ${req.method} ${req.url}`);
@@ -100,7 +95,7 @@ class UserController {
                     return;
                 }
                 //Si password valide, on génère un token JWT qui expire dans 1h
-                const accessToken = jwt.sign({ user }, "VIOLETTE", {
+                const accessToken = jsonwebtoken_1.default.sign({ user }, "VIOLETTE", {
                     expiresIn: "1h",
                 });
                 // Réponse JSON incluant le token JWT

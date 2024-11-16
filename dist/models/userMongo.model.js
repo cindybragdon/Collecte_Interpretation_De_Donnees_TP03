@@ -23,32 +23,28 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// src/models/User.model.ts
 const mongoose_1 = __importStar(require("mongoose"));
-const ProductSchema = new mongoose_1.Schema({
+const UserSchema = new mongoose_1.Schema({
     id: { type: Number, required: true, unique: true },
-    title: { type: String, required: true, minlength: 3, maxlength: 50 },
-    description: { type: String },
-    category: { type: String },
-    quantity: {
-        type: Number,
-        default: 0,
-        validate: {
-            validator: (value) => value >= 0,
-            message: 'Le prix doit être un nombre positif ou zéro.'
-        }
-    },
-    price: {
-        type: Number,
+    email: {
+        type: String,
         required: true,
+        unique: true,
         validate: {
-            validator: (value) => value >= 0,
-            message: 'Le prix doit être un nombre positif ou zéro.'
-        }
+            validator: function (email) {
+                return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
+            },
+            message: (props) => `${props.value} format d'email invalide.`,
+        },
     },
-    image: { type: String },
-    rating: {
-        rate: { type: Number },
-        count: { type: Number },
+    role: { type: String, enum: ['gestionnaire', 'employe'], required: true },
+    username: { type: String, required: false, unique: true },
+    password: { type: String, required: true },
+    name: {
+        firstname: { type: String, required: true },
+        lastname: { type: String, required: true },
     },
+    phone: { type: String, required: false }
 });
-exports.default = mongoose_1.default.model('Product', ProductSchema);
+exports.default = mongoose_1.default.model('User', UserSchema);

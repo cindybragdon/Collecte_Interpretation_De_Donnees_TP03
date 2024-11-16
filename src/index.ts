@@ -5,9 +5,7 @@ import productMongoRoutes from './routes/productsMongo.route';
 import { fetchProductsFromAPi } from "./fetchProductsApi";
 import { fetchUsersFromAPi } from "./fetchUsersApi";
 import { errorMiddleware } from "./middlewares/error.middleware";
-import fetchPRODUCTSApiStoredInMongoDB from './fetchPRODUCTSApiStoredInMongoDB';
-import fetchUSERSApiStoredInMongoDB from './fetchPRODUCTSApiStoredInMongoDB';
-
+import fetchPRODUCTApiStoredInMongoDB from './fetchPRODUCTSApiStoredInMongoDB';
 import mongoose from 'mongoose';
 
 const path = require("path");
@@ -70,38 +68,46 @@ app.use("/", errorMiddleware);
 // Connexion à MongoDB
 const MONGO_URI = 'mongodb+srv://cindybragdon:abc-123@cluster0.k9lfh.mongodb.net/mongoDb_Api_RESTful_PROD';
 mongoose.connect(MONGO_URI)
-  .then(() => console.log("Index : Connecté à MongoDB!!"))
+  .then(() => console.log("INdex : Connecté à MongoDB!!"))
   .catch((err) => console.error("Index : Erreur de connexion MongoDB :", err));
 
 // Appeler le fetch pour peupler MongoDB avec les produits de l'API Fake Store au démarrage
-fetchPRODUCTSApiStoredInMongoDB()
-  .then(() => console.log("Index : Produits importés de l'API Fake Store"))
+fetchPRODUCTApiStoredInMongoDB()
+  .then(() => console.log("Index fetchPRODUCTApiStoredInMongoDB() : Produits importés de l'API Fake Store"))
   .catch((error) => console.error("Index : Erreur lors de l'importation des produits :", error));
 
-// Appeler le fetch pour peupler MongoDB avec les users de l'API Fake Store au démarrage
-fetchUSERSApiStoredInMongoDB()
-  .then(() => console.log("Index : Userss importés de l'API Fake Store"))
-  .catch((error) => console.error("Index : Erreur lors de l'importation des users :", error));
-
-// Démarrage du serveur en HTTPS
-async function populateJsonIfEmpty() {
-  const productsFilePath = path.join(__dirname, "productsData.json");
-  const usersFilePath = path.join(__dirname, "usersData.json");
-
-  if (!fs.existsSync(productsFilePath) || fs.readFileSync(productsFilePath, "utf-8").trim() === "") {
-    await fetchProductsFromAPi();
+// Fonction pour vérifier si les fichiers sont vides ou non
+const isFileEmpty = (filePath: string): boolean => {
+  try {
+    const fileData = fs.readFileSync(filePath, "utf8");
+    //console.log(` INDEX : Contenu du fichier ${filePath}:`, fileData.trim()); // Ajout de logs pour vérifier le contenu
+    return fileData.trim() === ""; // Vérifie si le fichier est vide
+  } catch (err) {
+    console.error(`Erreur de lecture du fichier ${filePath}:`, err);
+    return true; // Si le fichier n'existe pas ou est illisible, on considère qu'il est vide
   }
-  
-  if (!fs.existsSync(usersFilePath) || fs.readFileSync(usersFilePath, "utf-8").trim() === "") {
-    await fetchUsersFromAPi();
-  }
-}
+};
 
 // Démarrage du serveur en HTTPS
 https.createServer(options, app).listen(port, () => {
   console.log(`Serveur en écoute sur <https://localhost>:${port}`);
-  populateJsonIfEmpty()
-    .then(() => console.log("Vérification des fichiers JSON complétée."))
-    .catch((error) => console.error("Erreur lors de la vérification des fichiers JSON :", error));
+  console.log("DÉMARRAGE SERVEUR On est dans index");
 
+  // Définir les chemins relatifs vers les fichiers JSON
+  const productFilePath = path.join(__dirname, '../data/productData.json');
+  const userFilePath = path.join(__dirname, '../data/usersData.json');
+
+  if (isFileEmpty(productFilePath)) {
+    console.log("Le fichier productData.json est vide, appel à fetchProductsFromAPi.");
+    fetchProductsFromAPi();
+  } else {
+    console.log("Le fichier productData.json contient déjà des données.");
+  }
+
+  if (isFileEmpty(userFilePath)) {
+    console.log("Le fichier usersData.json est vide, appel à fetchUsersFromAPi.");
+    fetchUsersFromAPi();
+  } else {
+    console.log("Le fichier usersData.json contient déjà des données.");
+  }
 });

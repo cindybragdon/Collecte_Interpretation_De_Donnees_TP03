@@ -1,3 +1,4 @@
+"use strict";
 /**
  * @swagger
  * /v2/users/register:
@@ -21,7 +22,6 @@
  *       400:
  *         description: Erreur de validation des données
  */
-
 /**
  * @swagger
  * /v2/users/login:

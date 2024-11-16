@@ -6,14 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.config = void 0;
 // src/config/config.ts
 const dotenv_1 = __importDefault(require("dotenv"));
-// Charger les variables d'environnement à partir du fichier .env
 dotenv_1.default.config();
 exports.config = {
-    port: process.env.PORT || 3000,
-    sessionSecret: process.env.SESSION_SECRET || "secret_par_defaut_pour_les_sessions",
-    jwtSecret: process.env.JWT_SECRET || "secret_par_defaut_pour_le_jwt",
-    databaseUrl: process.env.DATABASE_URL || "mongodb://localhost:27017/defaultdb",
-    DB_URI: process.env.NODE_ENV === "test" ? process.env.DB_URI_TEST : process.env.DB_URI_PROD,
-    nodeEnv: process.env.NODE_ENV || "development",
-    isProduction: process.env.NODE_ENV === "production",
+    PORT: process.env.PORT || 3000,
+    SESSION_SECRET: process.env.SESSION_SECRET || 'default_secret',
+    JWT_SECRET: process.env.JWT_SECRET || 'default_jwt_secret',
+    DB_URI_DEV: process.env.DB_URI_DEV || '',
+    DB_URI_TEST: process.env.DB_URI_TEST || '',
+    DB_URI_PROD: process.env.DB_URI_PROD || '',
+    NODE_ENV: process.env.NODE_ENV || 'development',
 };

@@ -10,16 +10,16 @@ const ProductSchema = new Schema<IProductMongo>({
     type: Number, 
     default: 0,
     validate: {
-      validator: (value: number) => Number.isInteger(value) && value >= 0,
-      message: 'La quantité doit être un entier positif ou zéro.'
+      validator: (value: number) => value >= 0,
+      message: 'Le prix doit être un nombre positif ou zéro.'
     }
   },
   price: { 
     type: Number, 
     required: true, 
     validate: {
-      validator: (value: number) => Number.isInteger(value) && value >= 0,
-      message: 'Le prix doit être un entier positif ou zéro.'
+      validator: (value: number) => value >= 0,
+      message: 'Le prix doit être un nombre positif ou zéro.'
     }
   },
   image: { type: String },

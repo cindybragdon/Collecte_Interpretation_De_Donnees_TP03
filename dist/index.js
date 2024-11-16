@@ -10,7 +10,7 @@ const productsMongo_route_1 = __importDefault(require("./routes/productsMongo.ro
 const fetchProductsApi_1 = require("./fetchProductsApi");
 const fetchUsersApi_1 = require("./fetchUsersApi");
 const error_middleware_1 = require("./middlewares/error.middleware");
-const fetchApiStoredInMongoDB_1 = __importDefault(require("./fetchApiStoredInMongoDB"));
+const fetchPRODUCTSApiStoredInMongoDB_1 = __importDefault(require("./fetchPRODUCTSApiStoredInMongoDB"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const path = require("path");
 const fs = require("fs");
@@ -60,16 +60,43 @@ app.use("/", error_middleware_1.errorMiddleware);
 // Connexion à MongoDB
 const MONGO_URI = 'mongodb+srv://cindybragdon:abc-123@cluster0.k9lfh.mongodb.net/mongoDb_Api_RESTful_PROD';
 mongoose_1.default.connect(MONGO_URI)
-    .then(() => console.log("Index : Connecté à MongoDB!!"))
+    .then(() => console.log("INdex : Connecté à MongoDB!!"))
     .catch((err) => console.error("Index : Erreur de connexion MongoDB :", err));
 // Appeler le fetch pour peupler MongoDB avec les produits de l'API Fake Store au démarrage
-(0, fetchApiStoredInMongoDB_1.default)()
-    .then(() => console.log("Index : Produits importés de l'API Fake Store"))
+(0, fetchPRODUCTSApiStoredInMongoDB_1.default)()
+    .then(() => console.log("Index fetchPRODUCTApiStoredInMongoDB() : Produits importés de l'API Fake Store"))
     .catch((error) => console.error("Index : Erreur lors de l'importation des produits :", error));
+// Fonction pour vérifier si les fichiers sont vides ou non
+const isFileEmpty = (filePath) => {
+    try {
+        const fileData = fs.readFileSync(filePath, "utf8");
+        //console.log(` INDEX : Contenu du fichier ${filePath}:`, fileData.trim()); // Ajout de logs pour vérifier le contenu
+        return fileData.trim() === ""; // Vérifie si le fichier est vide
+    }
+    catch (err) {
+        console.error(`Erreur de lecture du fichier ${filePath}:`, err);
+        return true; // Si le fichier n'existe pas ou est illisible, on considère qu'il est vide
+    }
+};
 // Démarrage du serveur en HTTPS
 https.createServer(options, app).listen(port, () => {
     console.log(`Serveur en écoute sur <https://localhost>:${port}`);
     console.log("DÉMARRAGE SERVEUR On est dans index");
-    (0, fetchProductsApi_1.fetchProductsFromAPi)();
-    (0, fetchUsersApi_1.fetchUsersFromAPi)();
+    // Définir les chemins relatifs vers les fichiers JSON
+    const productFilePath = path.join(__dirname, '../data/productData.json');
+    const userFilePath = path.join(__dirname, '../data/usersData.json');
+    if (isFileEmpty(productFilePath)) {
+        console.log("Le fichier productData.json est vide, appel à fetchProductsFromAPi.");
+        (0, fetchProductsApi_1.fetchProductsFromAPi)();
+    }
+    else {
+        console.log("Le fichier productData.json contient déjà des données.");
+    }
+    if (isFileEmpty(userFilePath)) {
+        console.log("Le fichier usersData.json est vide, appel à fetchUsersFromAPi.");
+        (0, fetchUsersApi_1.fetchUsersFromAPi)();
+    }
+    else {
+        console.log("Le fichier usersData.json contient déjà des données.");
+    }
 });
