@@ -12,6 +12,7 @@ const fetchUsersApi_1 = require("./fetchUsersApi");
 const error_middleware_1 = require("./middlewares/error.middleware");
 const fetchPRODUCTSApiStoredInMongoDB_1 = __importDefault(require("./fetchPRODUCTSApiStoredInMongoDB"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const fetchUSERSApiStoredInMongoDB_1 = __importDefault(require("./fetchUSERSApiStoredInMongoDB"));
 const path = require("path");
 const fs = require("fs");
 const https = require("https");
@@ -66,6 +67,10 @@ mongoose_1.default.connect(MONGO_URI)
 (0, fetchPRODUCTSApiStoredInMongoDB_1.default)()
     .then(() => console.log("Index fetchPRODUCTApiStoredInMongoDB() : Produits importés de l'API Fake Store"))
     .catch((error) => console.error("Index : Erreur lors de l'importation des produits :", error));
+// Appeler le fetch pour peupler MongoDB avec les users de l'API Fake Store au démarrage
+(0, fetchUSERSApiStoredInMongoDB_1.default)()
+    .then(() => console.log("Index fetchUSERSApiStoredInMongoDB() : Users importés de l'API Fake Store"))
+    .catch((error) => console.error("Index : Erreur lors de l'importation des users :", error));
 // Fonction pour vérifier si les fichiers sont vides ou non
 const isFileEmpty = (filePath) => {
     try {
