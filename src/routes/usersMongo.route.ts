@@ -1,3 +1,10 @@
+import { Router } from 'express';
+import { UserMongoController } from "../controllers/usersMongo.controller";
+
+
+const router = Router();
+const userMongoController = new UserMongoController();
+
 /**
  * @swagger
  * /v2/users/register:
@@ -21,6 +28,8 @@
  *       400:
  *         description: Erreur de validation des données
  */
+
+
 
 /**
  * @swagger
@@ -61,3 +70,10 @@
  *       401:
  *         description: Identifiants invalides
  */
+
+
+router.post("/users/register", userMongoController.createNewUser);
+
+router.post("/users/login", userMongoController.userLogin);
+
+export default router;

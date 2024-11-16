@@ -8,6 +8,8 @@ import { errorMiddleware } from "./middlewares/error.middleware";
 import fetchPRODUCTApiStoredInMongoDB from './fetchPRODUCTSApiStoredInMongoDB';
 import mongoose from 'mongoose';
 import fetchUSERSApiStoredInMongoDB from "./fetchUSERSApiStoredInMongoDB";
+import userMongoRoutes from "./routes/usersMongo.route";
+
 
 const path = require("path");
 const fs = require("fs");
@@ -47,7 +49,11 @@ app.use(express.json());
 
 // Route de base
 app.get("/v1", (req: Request, res: Response) => {
-  res.send("Hello, site HTTPS sécurisé!");
+  res.send("Hello, site HTTPS sécurisé sur /v1!");
+});
+
+app.get("/v2", (req: Request, res: Response) => {
+  res.send("Hello, site HTTPS sécurisé sur /v2!");
 });
 
 // Charger le certificat et la clé pour HTTPS
@@ -59,6 +65,8 @@ const options = {
 // Utiliser les routes pour les utilisateurs et les produits
 app.use("/", userRoutes);
 app.use("/", productRoutes);
+app.use("/", userMongoRoutes);
+app.use("/", productMongoRoutes);
 
 // Routes MongoDB
 app.use("/api/mongodb", productMongoRoutes);
