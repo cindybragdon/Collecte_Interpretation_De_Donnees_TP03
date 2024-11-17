@@ -13,6 +13,7 @@ const error_middleware_1 = require("./middlewares/error.middleware");
 const fetchPRODUCTSApiStoredInMongoDB_1 = __importDefault(require("./fetchPRODUCTSApiStoredInMongoDB"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const fetchUSERSApiStoredInMongoDB_1 = __importDefault(require("./fetchUSERSApiStoredInMongoDB"));
+const usersMongo_route_1 = __importDefault(require("./routes/usersMongo.route"));
 const path = require("path");
 const fs = require("fs");
 const https = require("https");
@@ -44,7 +45,10 @@ app.use((req, res, next) => {
 app.use(express_1.default.json());
 // Route de base
 app.get("/v1", (req, res) => {
-    res.send("Hello, site HTTPS sécurisé!");
+    res.send("Hello, site HTTPS sécurisé sur /v1!");
+});
+app.get("/v2", (req, res) => {
+    res.send("Hello, site HTTPS sécurisé sur /v2!");
 });
 // Charger le certificat et la clé pour HTTPS
 const options = {
@@ -54,6 +58,8 @@ const options = {
 // Utiliser les routes pour les utilisateurs et les produits
 app.use("/", users_route_1.default);
 app.use("/", products_route_1.default);
+app.use("/", usersMongo_route_1.default);
+app.use("/", productsMongo_route_1.default);
 // Routes MongoDB
 app.use("/api/mongodb", productsMongo_route_1.default);
 // Middleware de gestion des erreurs

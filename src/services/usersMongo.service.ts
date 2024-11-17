@@ -17,17 +17,17 @@ export class UsersMongoService {
       });
       return await newUser.save();
     } catch (error) {
-      console.error("Erreur lors de la création de l'utilisateur :", error);
+      console.log("Erreur lors de la création de l'utilisateur :", error);
       throw new Error("Erreur lors de la création de l'utilisateur");
     }
   }
 
   //*********************FIND USER BY EMAIL*******************//
-  public static async findUserByEmail(email: string): Promise<IUserMongo | null> {
+  public static async findUserByEmail(email: string) {
     try {
       return await UserSchema.findOne({ email });
     } catch (error) {
-      console.error("Erreur lors de la recherche de l'utilisateur par email :", error);
+      console.log("Erreur lors de la recherche de l'utilisateur par email :", error);
       throw new Error("Erreur lors de la recherche de l'utilisateur");
     }
   }

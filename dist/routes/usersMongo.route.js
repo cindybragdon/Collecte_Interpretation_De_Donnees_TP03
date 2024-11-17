@@ -1,4 +1,9 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const usersMongo_controller_1 = require("../controllers/usersMongo.controller");
+const router = (0, express_1.Router)();
+const userMongoController = new usersMongo_controller_1.UserMongoController();
 /**
  * @swagger
  * /v2/users/register:
@@ -61,3 +66,6 @@
  *       401:
  *         description: Identifiants invalides
  */
+router.post("/users/register", userMongoController.createNewUser);
+router.post("/users/login", userMongoController.userLogin);
+exports.default = router;

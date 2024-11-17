@@ -43,15 +43,14 @@ const fetchPRODUCTSApiStoredInMongoDB = async () => {
      // Validation des produits
      const validProducts: ProductMongoDocument[] = products
      .map((product) => {
-       // Validation sur le champ title et price.  Les autres données sont facultatives, mais ces champs aident à find() et sont essentiels.
 
        if (!(product.title.length >= 3 && product.title.length <= 50)) {
-         console.error('Fetch Mongo : Produit non valide:', product);
+         console.log('Fetch Mongo : Produit non valide:', product);
          return null;
        }
 
        if (!product.title || !product.price) {
-         console.error('Fetch Mongo : Produit incomplet:', product);
+         console.log('Fetch Mongo : Produit incomplet:', product);
          return null;
        }
 
@@ -72,18 +71,18 @@ const fetchPRODUCTSApiStoredInMongoDB = async () => {
     console.log(`Fetch Mongo : ${validProducts.length} produits valides trouvés.`);
 
     if (validProducts.length > 0) {
-      await ProductSchema.deleteMany({}); // Vider la collection MongoDB
+      await ProductSchema.deleteMany({}); 
       console.log("Fetch Mongo : Collection MongoDB vidée.");
-      await ProductSchema.insertMany(validProducts) // Utiliser les produits validés
+      await ProductSchema.insertMany(validProducts) 
         .then((result) => {
           console.log("Produits insérés avec succès :", result);
         })
         .catch((err) => {
-          console.error("Erreur d'insertion dans MongoDB :", err);
+          console.log("Erreur d'insertion dans MongoDB :", err);
         });
     }
   } catch (error) {
-    console.error("Fetch Mongo : Erreur générale :", error);
+    console.log("Fetch Mongo : Erreur générale :", error);
   }
 };
 

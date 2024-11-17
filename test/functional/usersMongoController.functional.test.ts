@@ -2,47 +2,43 @@ import { JWT_SECRET } from "../../src/utils/jwt.util";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../../src/models/userMongo.model'; 
-
-const mongoose = require("mongoose");
-const request = require("supertest");
-const app = require("../src/index");
+import app  from '../../src/index';
+import request from 'supertest';
+import mongoose from "mongoose";
+const { MongoMemoryServer } = require('mongodb-memory-server');
+let mongoServer;
 
 require("dotenv").config();
 
-// Avant tous les tests : config In Memory MongoDB et connecte Mongoose
-beforeEach(async () => {
-    await mongoose.connect(process.env.MONGODB_URI);
-  });
+beforeAll(async () => {
+  if (mongoose.connection.readyState === 0) {
+    await mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://cindybragdon:abc-123@cluster0.k9lfh.mongodb.net/mongoDb_Api_RESTful_TEST");
+  }
+});
+
+afterAll(async () => {
+  await mongoose.disconnect();
+});
+
+// // Avant tous les tests : config In Memory MongoDB et connecte Mongoose
+// beforeEach(async () => {
+//     await mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://cindybragdon:abc-123@cluster0.k9lfh.mongodb.net/mongoDb_Api_RESTful_TEST"
+//     );
+//   });
   
-// Avant tous les tests : config In Memory MongoDB et connecte Mongoose
-afterEach(async () => {
-    await mongoose.connection.close();
-  });
+// // Avant tous les tests : config In Memory MongoDB et connecte Mongoose
+// afterEach(async () => {
+//     await mongoose.connection.close();
+//   });
+
+  
 
 
     //*********************CREATE NEW USER*******************//
-  describe("POST /v2/users/register", () => {
-    it("should create a user", async () => {
-      const res = await request(app).post("/v2/users/register").send({
-        email: "miniwheat@gmail.com",
-          role: 'gestionnaire',
-          username: 'miniwheat',
-          password: 'jmNoemie',
-          name: {
-            firstname: 'Mini',
-            lastname: 'Wheat',
-          },
-      });
-      expect(res.statusCode).toBe(201);
-      expect(res.body.email).toBe("miniwheat@gmail.com");
-    });
-  });
-
-
-  describe("POST /v2/users/register", () => {
-    it("should return a status 400 error", async () => {
-      const res = await request(app).post("/v2/users/register").send({
-        email: "miniwheat@gmail.com",
+    describe("POST /v2/users/register", () => {
+      it("should create a user", async () => {
+        const res = await request(app).post("/v2/users/register").send({
+          email: "miniwheat@gmail.com",
           role: 'gestionnaire',
           username: 'miniwheat',
           password: 'jmNoemie',
@@ -51,11 +47,48 @@ afterEach(async () => {
             lastname: 'Wheat',
           },
         });
-        expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith(
-            expect.objectContaining({ message: "UserMongoController : Erreur inconnue lors de la création de l'utilisateur"  })
-        )});
+        expect(res.statusCode).toBe(201);
+        expect(res.body.email).toBe("miniwheat@gmail.com");
+      });
     });
+
+
+    describe("POST /v2/users/register", () => {
+      it("should return a status 400 error for missing email", async () => {
+        const res = await request(app).post("/v2/users/register").send({
+          role: 'gestionnaire',
+          username: 'miniwheat',
+          password: 'jmNoemie',
+          name: {
+            firstname: 'Mini',
+            lastname: 'Wheat',
+          },
+        });
+    
+        // Vérification que le statut est bien 400
+        expect(res.status).toBe(400);
+        // Vérification que le message d'erreur est celui attendu
+        expect(res.body.message).toBe("Veuillez renseigner tous les champs, email et mot de passe sont requis.");
+      });
+    
+      it("should return a status 400 error for missing password", async () => {
+        const res = await request(app).post("/v2/users/register").send({
+          email: "miniwheat@gmail.com",
+          role: 'gestionnaire',
+          username: 'miniwheat',
+          name: {
+            firstname: 'Mini',
+            lastname: 'Wheat',
+          },
+        });
+    
+        // Vérification que le statut est bien 400
+        expect(res.status).toBe(400);
+        // Vérification que le message d'erreur est celui attendu
+        expect(res.body.message).toBe("Veuillez renseigner tous les champs, email et mot de passe sont requis.");
+      });
+    });
+    
 
 
       //*********************LOGIN USER*******************//

@@ -3,3 +3,25 @@
 {"level":"info","message":"GET /products","timestamp":"2024-10-08T15:21:23.334Z"}
 {"level":"info","message":"GET /products","timestamp":"2024-10-08T15:21:23.873Z"}
 {"level":"info","message":"GET /products","timestamp":"2024-10-08T15:21:24.356Z"}
+{"level":"info","message":"STATUS 200 : GET /v2/products","timestamp":"2024-11-16T21:45:53.306Z"}
+{"level":"info","message":"STATUS 200 : GET /v2/products","timestamp":"2024-11-16T21:53:18.489Z"}
+{"level":"info","message":"STATUS 200 : GET /v2/products","timestamp":"2024-11-16T21:54:02.088Z"}
+{"level":"error","message":"STATUS 401 : POST /users/login","timestamp":"2024-11-17T00:44:00.128Z"}
+{"level":"error","message":"STATUS 401 : POST /users/login","timestamp":"2024-11-17T00:47:06.560Z"}
+{"level":"error","message":"STATUS 401 : POST /users/login","timestamp":"2024-11-17T00:48:11.448Z"}
+{"level":"error","message":"STATUS 401 : POST /users/login","timestamp":"2024-11-17T00:55:10.278Z"}
+{"level":"error","message":"STATUS 401 : POST /users/login","timestamp":"2024-11-17T00:55:42.819Z"}
+{"level":"error","message":"STATUS 400 : POST /users/login","timestamp":"2024-11-17T01:39:33.744Z"}
+{"level":"error","message":"STATUS 400 : POST /users/login","timestamp":"2024-11-17T01:43:21.583Z"}
+{"level":"error","message":"STATUS 400 : POST /users/login","timestamp":"2024-11-17T01:45:43.182Z"}
+{"level":"error","message":"STATUS 401 : POST /users/login","timestamp":"2024-11-17T01:49:42.089Z"}
+{"level":"error","message":"STATUS 401 : POST /users/login","timestamp":"2024-11-17T01:49:42.114Z"}
+{"level":"error","message":"STATUS 401 : POST /users/login","timestamp":"2024-11-17T01:49:42.119Z"}
+{"level":"error","message":"STATUS 400 : POST /users/login","timestamp":"2024-11-17T01:50:01.375Z"}
+{"level":"error","message":"STATUS 400 : POST /v2/users/register","timestamp":"2024-11-17T02:18:46.034Z"}
+{"level":"error","message":"STATUS 401 : POST /users/login","timestamp":"2024-11-17T02:18:46.079Z"}
+{"level":"error","message":"STATUS 401 : POST /users/login","timestamp":"2024-11-17T02:18:46.100Z"}
+{"level":"error","message":"STATUS 401 : POST /users/login","timestamp":"2024-11-17T02:18:46.106Z"}
+{"level":"error","message":"STATUS 400 : POST /v2/users/register","timestamp":"2024-11-17T02:18:46.124Z"}
+{"level":"error","message":"STATUS 400 : POST /v2/users/register","timestamp":"2024-11-17T02:18:46.135Z"}
+{"level":"error","message":"STATUS 400 : POST /users/login","timestamp":"2024-11-17T02:18:46.216Z"}

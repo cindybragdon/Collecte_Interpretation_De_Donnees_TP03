@@ -24,5 +24,4 @@ const UserSchema = new Schema<IUserMongo>({
   },
   phone: { type: String, required: false }
 });
-
 export default mongoose.model<IUserMongo>('User', UserSchema);
