@@ -2,7 +2,7 @@
 ## Dans le cadre du cours Collecte et Interpretation de données 420-514-MV
 ## Enseigné par Sara Boumehraz, Cégep Marie-Victorin
 
-##Rapport d'analyse fonctionnelle et technique ainsi que de conformité aux exigences <br>
+## Rapport d'analyse fonctionnelle et technique ainsi que de conformité aux exigences <br>
 
 Dans le cadre du développement d'une API RESTful pour la gestion d'inventaire d'une entreprise, ce projet vise à approfondir les compétences en persistance des données, en sécurité des API et en automatisation des tests. Ce travail s’inscrit dans la continuité du TP1, où une API fonctionnelle a été développée avec Node.js, Express et TypeScript pour gérer les opérations CRUD sur des produits et utilisateurs.<br>
 
@@ -12,13 +12,13 @@ Ce rapport détaille les mesures et configurations mises en place pour satisfair
 
 ---
 
-##Conformité aux exigences fonctionnelles<br>
+## Conformité aux exigences fonctionnelles<br>
 
 Après réflexion, j'ai décidé de concevoir la version 2 de l'API (intégrant MongoDB) dans des fichiers séparés de ceux utilisés pour la version 1 (basée sur JSON). Cependant, je m'interroge sur l'opportunité d'une autre approche : celle de faire cohabiter les deux versions au sein d'une même base de code, ce qui aurait peut-être été plus organisé.<br>
 
 Lorsque je suis passée à l'écriture des tests, j'ai réalisé que cette séparation m'obligeait à rédiger deux fois plus de tests, ce qui a considérablement alourdi le travail. Certes, la structure choisie présente l’avantage de faciliter la localisation des fichiers spécifiques à MongoDB, mais elle contribue également à rendre le projet plus complexe et potentiellement moins fluide à maintenir à long terme.<br>
 
-##Persistance des données avec MongoDB et JSON<br>
+## Persistance des données avec MongoDB et JSON<br>
 Mise en place de MongoDB avec AtlasDB et la connexion via les variables d’environnement.  Les connexions préalablement faites pour le TP1 sont toujours accessibles.<br>
 
 ![image](https://github.com/user-attachments/assets/3635cacd-2317-4b65-ab77-911b7f225f5e)
@@ -26,7 +26,7 @@ Mise en place de MongoDB avec AtlasDB et la connexion via les variables d’envi
 
  ---
 
-##Documentation des Accommodements entre ProductsController et ProductsMongoController<br>
+## Documentation des Accommodements entre ProductsController et ProductsMongoController<br>
 
 Le projet utilise deux implémentations distinctes pour la gestion des produits :<br>
 o	JSON (ProductsController & UsersController)  : basé sur des fichiers JSON pour le stockage des données.  Solution rapide et simple à mettre en œuvre pour prototyper.  Pas de dépendance externe à une base de données.  Données faciles à manipuler directement dans un fichier.<br>
@@ -47,26 +47,26 @@ o	MongoDB (ProductsMongoService & UsersMongoService) : Conçu pour une gestion r
 
 ---
 
-##Accommodements techniques<br>
+## Accommodements techniques<br>
 
-##Structure de données<br>
+## Structure de données<br>
 o	JSON : Dans UsersService, les données des utilisateurs sont converties en instances de UsersModel, ajoutant une couche de structuration. Cependant, chaque opération nécessite une manipulation locale du fichier JSON.<br>
 o	MongoDB : Les données des utilisateurs sont directement gérées en tant que documents MongoDB, ce qui simplifie les opérations complexes et permet d'exploiter des fonctionnalités comme les index.<br>
 
-##Mot de passe : génération vs sécurisation<br>
+## Mot de passe : génération vs sécurisation<br>
 o	JSON : Les mots de passe sont créés dynamiquement à l'aide de generate-password, mais ils ne sont pas protégés (absence de hachage).<br>
 o	MongoDB : Les mots de passe sont toujours hachés avec bcrypt, offrant un niveau de sécurité beaucoup plus élevé.<br>
 
-##Recherche par email<br>
+## Recherche par email<br>
 o	JSON : La méthode findUserEmail parcourt l'intégralité du fichier JSON en mémoire, utilisant une recherche linéaire inefficace pour de grandes quantités de données.<br>
 
 o	MongoDB : MongoDB permet une recherche rapide grâce à l'utilisation d'index optimisés pour les champs, comme l'email.<br>
 
-##Authentification et gestion des sessions<br>
+## Authentification et gestion des sessions<br>
 o	JSON : Aucune gestion des sessions ou des authentifications n'est implémentée dans UsersService.<br>
 o	MongoDB : Avec UsersMongoService, les sessions sont sécurisées via des tokens JWT, configurables avec une date d'expiration.<br>
 
-##Tests<br>
+## Tests<br>
 Je n’ai pas su faire les tests nécessaires à la protection et au contrôle de qualité complet de l’API.  Cependant, j’ai bien compris que vous avions 3 types de tests à faire sur chacun des endpoint et des responses.<br>
 
 ---
