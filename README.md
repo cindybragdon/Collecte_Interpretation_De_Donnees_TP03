@@ -10,6 +10,8 @@ Dans ce TP3, l’objectif principal est d’intégrer une base de données Mongo
 
 Ce rapport détaille les mesures et configurations mises en place pour satisfaire les exigences fonctionnelles et techniques, en s’assurant de respecter les bonnes pratiques de développement et de sécurité. Il présente également les outils et méthodologies utilisés pour l’automatisation des tests et la gestion des environnements de test et de production.<br>
 
+---
+
 Conformité aux exigences fonctionnelles<br>
 
 Après réflexion, j'ai décidé de concevoir la version 2 de l'API (intégrant MongoDB) dans des fichiers séparés de ceux utilisés pour la version 1 (basée sur JSON). Cependant, je m'interroge sur l'opportunité d'une autre approche : celle de faire cohabiter les deux versions au sein d'une même base de code, ce qui aurait peut-être été plus organisé.<br>
@@ -18,7 +20,11 @@ Lorsque je suis passée à l'écriture des tests, j'ai réalisé que cette sépa
 
 Persistance des données avec MongoDB et JSON<br>
 Mise en place de MongoDB avec AtlasDB et la connexion via les variables d’environnement.  Les connexions préalablement faites pour le TP1 sont toujours accessibles.<br>
- 
+
+![image](https://github.com/user-attachments/assets/3635cacd-2317-4b65-ab77-911b7f225f5e)
+
+
+ ---
 
 Documentation des Accommodements entre ProductsController et ProductsMongoController<br>
 
@@ -27,6 +33,9 @@ o	JSON (ProductsController & UsersController)  : basé sur des fichiers JSON pou
 
 o	MongoDB (ProductsMongoController & UsersMongoController) :basé sur MongoDB pour un stockage persistant et scalable. Conçu pour des volumes de données plus importants et des scénarios multi-utilisateurs. Gestion des requêtes plus performante grâce à un moteur de base de données optimisé.  Scalabilité accrue et intégration facile avec d'autres services.
 N’empêche, les controller se ressemblent d’une version à l’autre : <br>
+
+![image](https://github.com/user-attachments/assets/5ed3b306-276e-40c2-8ec4-312b449378e1)
+
  
 
 Les services diffèrent légèrement cependant :<br>
@@ -36,6 +45,9 @@ o	JSON (ProductsService & UsersService)  : Solution simple pour tester rapidemen
 
 o	MongoDB (ProductsMongoService & UsersMongoService) : Conçu pour une gestion robuste, sécurisée et évolutive des utilisateurs.<br>
 
+![image](https://github.com/user-attachments/assets/8f9a5cbf-d55e-4482-ad38-f1f899364df5)
+
+---
 
 Accommodements techniques<br>
 Structure de données<br>
