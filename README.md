@@ -1,3 +1,64 @@
+# Travail Pratique 03: Développement d'une API RESTful pour la gestion d'inventaire avec MongoDB
+## Dans le cadre du cours Collecte et Interpretation de données 420-514-MV
+## Enseigné par Sara Boumehraz, Cégep Marie-Victorin
+
+Rapport d'analyse fonctionnelle et technique ainsi que de conformité aux exigences
+
+Dans le cadre du développement d'une API RESTful pour la gestion d'inventaire d'une entreprise, ce projet vise à approfondir les compétences en persistance des données, en sécurité des API et en automatisation des tests. Ce travail s’inscrit dans la continuité du TP1, où une API fonctionnelle a été développée avec Node.js, Express et TypeScript pour gérer les opérations CRUD sur des produits et utilisateurs.
+
+Dans ce TP3, l’objectif principal est d’intégrer une base de données MongoDB afin de remplacer le stockage local JSON, de mettre en place un serveur de test sécurisé, et de garantir la fiabilité de l’API grâce à des tests automatisés couvrant à la fois les aspects fonctionnels et sécuritaires. En outre, des tests de performance seront réalisés pour vérifier la stabilité de l'API sous charge.  Les deux versions de l’API doivent être indépendantes l’une de l’autre et être accessibles simultanément.
+
+Ce rapport détaille les mesures et configurations mises en place pour satisfaire les exigences fonctionnelles et techniques, en s’assurant de respecter les bonnes pratiques de développement et de sécurité. Il présente également les outils et méthodologies utilisés pour l’automatisation des tests et la gestion des environnements de test et de production.
+
+Conformité aux exigences fonctionnelles
+
+Après réflexion, j'ai décidé de concevoir la version 2 de l'API (intégrant MongoDB) dans des fichiers séparés de ceux utilisés pour la version 1 (basée sur JSON). Cependant, je m'interroge sur l'opportunité d'une autre approche : celle de faire cohabiter les deux versions au sein d'une même base de code, ce qui aurait peut-être été plus organisé.
+
+Lorsque je suis passée à l'écriture des tests, j'ai réalisé que cette séparation m'obligeait à rédiger deux fois plus de tests, ce qui a considérablement alourdi le travail. Certes, la structure choisie présente l’avantage de faciliter la localisation des fichiers spécifiques à MongoDB, mais elle contribue également à rendre le projet plus complexe et potentiellement moins fluide à maintenir à long terme.
+
+Persistance des données avec MongoDB et JSON
+Mise en place de MongoDB avec AtlasDB et la connexion via les variables d’environnement.  Les connexions préalablement faites pour le TP1 sont toujours accessibles.
+ 
+
+Documentation des Accommodements entre ProductsController et ProductsMongoController
+
+Le projet utilise deux implémentations distinctes pour la gestion des produits :
+o	JSON (ProductsController & UsersController)  : basé sur des fichiers JSON pour le stockage des données.  Solution rapide et simple à mettre en œuvre pour prototyper.  Pas de dépendance externe à une base de données.  Données faciles à manipuler directement dans un fichier.
+
+o	MongoDB (ProductsMongoController & UsersMongoController) :basé sur MongoDB pour un stockage persistant et scalable. Conçu pour des volumes de données plus importants et des scénarios multi-utilisateurs. Gestion des requêtes plus performante grâce à un moteur de base de données optimisé.  Scalabilité accrue et intégration facile avec d'autres services.
+N’empêche, les controller se ressemblent d’une version à l’autre : 
+ 
+
+Les services diffèrent légèrement cependant :
+ 
+
+o	JSON (ProductsService & UsersService)  : Solution simple pour tester rapidement les fonctionnalités liées aux utilisateurs.  : Les données peuvent être manipulées directement via le fichier JSON sans appel extérieur.
+
+o	MongoDB (ProductsMongoService & UsersMongoService) : Conçu pour une gestion robuste, sécurisée et évolutive des utilisateurs.
+
+
+Accommodements techniques
+Structure de données
+o	JSON : Dans UsersService, les données des utilisateurs sont converties en instances de UsersModel, ajoutant une couche de structuration. Cependant, chaque opération nécessite une manipulation locale du fichier JSON.
+o	MongoDB : Les données des utilisateurs sont directement gérées en tant que documents MongoDB, ce qui simplifie les opérations complexes et permet d'exploiter des fonctionnalités comme les index.
+
+Mot de passe : génération vs sécurisation
+o	JSON : Les mots de passe sont créés dynamiquement à l'aide de generate-password, mais ils ne sont pas protégés (absence de hachage).
+o	MongoDB : Les mots de passe sont toujours hachés avec bcrypt, offrant un niveau de sécurité beaucoup plus élevé.
+
+Recherche par email
+o	JSON : La méthode findUserEmail parcourt l'intégralité du fichier JSON en mémoire, utilisant une recherche linéaire inefficace pour de grandes quantités de données.
+
+o	MongoDB : MongoDB permet une recherche rapide grâce à l'utilisation d'index optimisés pour les champs, comme l'email.
+
+Authentification et gestion des sessions
+o	JSON : Aucune gestion des sessions ou des authentifications n'est implémentée dans UsersService.
+o	MongoDB : Avec UsersMongoService, les sessions sont sécurisées via des tokens JWT, configurables avec une date d'expiration.
+
+Tests
+Je n’ai pas su faire les tests nécessaires à la protection et au contrôle de qualité complet de l’API.  Cependant, j’ai bien compris que vous avions 3 types de tests à faire sur chacun des endpoint et des responses.
+
+
 <a name="top"></a>
 
 # Travail Pratique 03: Développement d'une API RESTful pour la gestion d'inventaire
