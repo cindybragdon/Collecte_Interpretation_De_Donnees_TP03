@@ -2,21 +2,36 @@ import { Request, Response } from 'express';
 import { UsersMongoService } from '../services/usersMongo.service';
 import { logger } from '../logger/winston.logger';
 import { JWT_SECRET } from '../utils/jwt.util';
-
+import UserSchema from '../models/userMongo.model'; 
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { verifyIfUserMongoIsValid } from '../models/userMongo.model';
 
 
 export class UserMongoController {
   //*********************CREATE NEW USER*******************//
   public async createNewUser(req: Request, res: Response): Promise<void> {
     try {
-      const newUser = await UsersMongoService.createNewUser(req.body);
+
+      if(!verifyIfUserMongoIsValid(req.body)) {
+        logger.info(`STATUS 400 : ${req.method} ${req.url}`);
+        res.status(400).json({message: "UserMongoController : Utilisateur non ajoute"});
+        return ;
+      }
+
+      const newUser = new UserSchema(req.body);
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      newUser.password = hashedPassword;
+      
+      await UsersMongoService.createNewUser(newUser);
+
       logger.info(`STATUS 201 : ${req.method} ${req.url}`);
       res.status(201).json({
-        message: "UserMongoController : Utilisateur ajouté avec succès",
+        message: "UserMongoController : Utilisateur ajouté avec succes",
         user: newUser,
       });
+
+
     } catch (error) {
       if (error instanceof Error) {
         console.error(error);
@@ -24,7 +39,7 @@ export class UserMongoController {
         res.status(400).json({ message: error.message });
       } else {
         logger.error(`STATUS 400 : ${req.method} ${req.url}`);
-        res.status(400).json({ message: "UserMongoController : Erreur inconnue lors de la création de l'utilisateur" });
+        res.status(400).json({ message: "UserMongoController : Erreur inconnue lors de la creation de l'utilisateur" });
       }
     }
   }  
@@ -46,7 +61,7 @@ export class UserMongoController {
 
       if (!user) {
         logger.error(`STATUS 401 : ${req.method} ${req.url}`);
-        res.status(401).json({ message: "Connexion échouée" });
+        res.status(401).json({ message: "Connexion echouee" });
         return;
       }
 
@@ -54,7 +69,7 @@ export class UserMongoController {
 
       if (!isInputPasswordValid) {
         logger.error(`STATUS 401 : ${req.method} ${req.url}`);
-        res.status(401).json({ message: "Connexion échouée" });
+        res.status(401).json({ message: "Connexion echouee" });
         return;
       }
 

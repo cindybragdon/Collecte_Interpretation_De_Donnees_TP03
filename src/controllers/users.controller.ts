@@ -88,7 +88,7 @@ export class UserController {
 
       if (!user) {
         logger.error(`STATUS 401 : ${req.method} ${req.url}`);
-        res.status(401).json({ message: "Connexion echouée" });
+        res.status(401).json({ message: "Connexion echouee" });
         return;
       }
 
@@ -101,7 +101,7 @@ export class UserController {
       //Si le mot de passe n'est pas valide
       if (!isInputPasswordValid) {
         logger.error(`STATUS 401 : ${req.method} ${req.url}`);
-        res.status(401).json({ message: "Connexion echouée" });
+        res.status(401).json({ message: "Connexion echouee" });
         return;
       }
 

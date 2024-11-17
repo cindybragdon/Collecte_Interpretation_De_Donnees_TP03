@@ -1,4 +1,4 @@
-import UserSchema from '../models/userMongo.model'; // Assurez-vous que le chemin du modèle est correct
+import UserSchema from '../models/userMongo.model'; 
 import { IUserMongo } from '../interfaces/usersMongo.interface';
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
@@ -10,12 +10,7 @@ export class UsersMongoService {
   public static async createNewUser(userData: IUserMongo): Promise<IUserMongo> {
     try {
       // Hachage du mot de passe avant de sauvegarder l'utilisateur
-      const hashedPassword = await bcrypt.hash(userData.password, 10);
-      const newUser = new UserSchema({
-        ...userData,
-        password: hashedPassword,
-      });
-      return await newUser.save();
+      return await new UserSchema(userData).save();
     } catch (error) {
       console.log("Erreur lors de la création de l'utilisateur :", error);
       throw new Error("Erreur lors de la création de l'utilisateur");

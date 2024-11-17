@@ -2,6 +2,18 @@
 import mongoose, { Schema } from 'mongoose';
 import { IUserMongo } from '../interfaces/usersMongo.interface';
 
+
+
+export const verifyIfUserMongoIsValid = (data:IUserMongo) => {
+  const userMongoModel = mongoose.model<IUserMongo>('User', UserSchema);
+  const userMongoToVerify = new userMongoModel(data);
+  const validationError = userMongoToVerify.validateSync();
+  if(!validationError) {
+    return true;
+  } else {
+    return false;
+  }
+}
 const UserSchema = new Schema<IUserMongo>({
   id: { type: Number, required: true, unique: true },
   email: {

@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, { Request, Response } from "express";
 import userRoutes from "./routes/users.route";
 import productRoutes from "./routes/products.route";
 import productMongoRoutes from './routes/productsMongo.route';
