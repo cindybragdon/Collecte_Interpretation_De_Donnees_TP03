@@ -22,23 +22,20 @@ beforeAll(async () => {
   //verifyToken()
 });
 
-// Avant tous les tests : config In Memory MongoDB et connecte Mongoose
 afterAll(async () => {
   await mongoose.disconnect();
   await mongoServer.stop();
 });
 
-// Après chaque test : Supprime et nettoie la collection User
 afterEach(async () => {
   await User.deleteMany({});
 });
 
 describe('User Model Tests', () => {
-  
-
   //********************* CREATE NEW USER WITH MOCK *******************//
   test('should create a new user with hashed password', async () => {
-    const mockUser = {id:1, email:'miniwheat@gmail.com',role:'gestionnaire',username:'Mini Wheat', password:'jmNoemie', name:{    firstname: "llo",lastname: "yo"}, phone:"450-334-4353"};
+    const mockUser = {id:1, email:'miniwheat@gmail.com',role:'gestionnaire',username:'Mini Wheat', 
+      password:'jmNoemie', name:{    firstname: "llo",lastname: "yo"}, phone:"450-334-4353"};
     const mockUserData = new UserSchema();
     const hashedPassword = await bcrypt.hash(mockUserData.password, 10);
 

@@ -1,12 +1,3 @@
-// Le CONTROLLER est le point d'entrée des requêtes HTTP. Il reçoit
-// les requêtes, vérifie les paramètres d'entrée (ex. l'ID du produit),
-//  et utilise le service pour effectuer des opérations.
-// Le contrôleur ne devrait pas contenir de logique métier complexe.
-// Il devrait principalement déléguer les tâches au service.
-// Par exemple, dans ton ProductsController, tu aurais une fonction
-// qui récupère l'ID d'une requête, appelle la méthode findById
-// du service, puis renvoie la réponse au client.
-
 import { Request, Response } from "express";
 import { ProductsService } from "../services/products.service";
 import { ProductsModel } from "../models/products.model";
@@ -244,15 +235,9 @@ export class ProductsController {
 
   //*********************DELETE PRODUCT BY ID*******************//
   public deleteProduct = async (req: Request, res: Response): Promise<void> => {
-    //Ici on vérifie si on peut convertir le id en int.
-    //Si il s'agit de chiffre, tout sera cool.  Sinon, ça retourne isNaN
+   
     const idBody = parseInt(req.params.id);
 
-    //401 Si le user n'est pas autorisé
-    // if (AUCUNE IDÉE) {
-    //   console.log('PRODUCTS CONTROLLER : 401 Vous nêtes pas autorisé à ajouter un produit')
-    //   res.status(401).json({ message: "Vous n'êtes pas autorisé à ajouter un produit" });
-    // }
     if (isNaN(idBody) || !idBody) {
       console.log("CONTROLLER : L ID entré doit etre un entier");
       logger.error(`STATUS 400 : ${req.method} ${req.url}`);
@@ -261,7 +246,6 @@ export class ProductsController {
       });
       return;
     }
-    // Recherche du produit dans le JSON
     const productJson = await ProductsService.findById(idBody);
 
     if (!productJson) {

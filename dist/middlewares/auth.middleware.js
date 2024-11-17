@@ -8,7 +8,8 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const jwt_util_1 = require("../utils/jwt.util");
 const winston_logger_1 = require("../logger/winston.logger");
 const verifyToken = (req, res, next) => {
-    const token = req.headers["authorization"]?.split(" ")[1];
+    var _a;
+    const token = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
     if (!token) {
         console.log(req.headers);
         winston_logger_1.logger.error(`STATUS 403 : ${req.method} ${req.url}`);

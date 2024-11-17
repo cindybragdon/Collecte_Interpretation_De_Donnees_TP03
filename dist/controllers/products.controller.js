@@ -1,12 +1,4 @@
 "use strict";
-// Le CONTROLLER est le point d'entrée des requêtes HTTP. Il reçoit
-// les requêtes, vérifie les paramètres d'entrée (ex. l'ID du produit),
-//  et utilise le service pour effectuer des opérations.
-// Le contrôleur ne devrait pas contenir de logique métier complexe.
-// Il devrait principalement déléguer les tâches au service.
-// Par exemple, dans ton ProductsController, tu aurais une fonction
-// qui récupère l'ID d'une requête, appelle la méthode findById
-// du service, puis renvoie la réponse au client.
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -30,6 +22,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductsController = void 0;
 const products_service_1 = require("../services/products.service");
@@ -40,9 +41,9 @@ class ProductsController {
     constructor() {
         //*********************GET ALL PRODUCTS*******************//
         //Methode async qui prend req et res et qui ne retourne rien. getAllProducts fait des appels async
-        this.getAllProducts = async (req, res
+        this.getAllProducts = (req, res
         //Promesse de traitement en attente
-        ) => {
+        ) => __awaiter(this, void 0, void 0, function* () {
             console.log("on est dans products.controller" + req.params);
             try {
                 //Extraction des parametres qui sont stockés dans req.params
@@ -63,7 +64,7 @@ class ProductsController {
                 //Attend le retour de l'api et des manip faites sur le data
                 //Envoie à getProductsFiltered() les param pris de API URL et convertis filtrés
                 //*********************GET PRODUCTS FILTERED*******************//
-                const product = await products_service_1.ProductsService.getProductsFiltered(minimumPriceValue, maximumPriceValue, minimumInStockValue, maximumInStockValue);
+                const product = yield products_service_1.ProductsService.getProductsFiltered(minimumPriceValue, maximumPriceValue, minimumInStockValue, maximumInStockValue);
                 winston_logger_1.logger.info(`${req.method} ${req.url}`);
                 res.status(200).json({
                     message: "On est cool, ça passe! Les products sont filtrés ",
@@ -79,9 +80,9 @@ class ProductsController {
                     .status(400)
                     .json({ message: "Erreur lors du get des products filtrés" });
             }
-        };
+        });
         //*********************POST NEW PRODUCT*******************//
-        this.postNewProduct = async (req, res) => {
+        this.postNewProduct = (req, res) => __awaiter(this, void 0, void 0, function* () {
             //Cueillette des éléments dans le body (Postman) (req.body)
             const { title, price, description, category, inStock } = req.body;
             const productsList = Array.from(JSON.parse(fs.readFileSync("./data/productData.json", {
@@ -129,16 +130,16 @@ class ProductsController {
             }
             else {
                 //Appel a ProductsService pour append le fichier productsData.json avec le nouveau produit
-                await products_service_1.ProductsService.addNewProduct(newProduct);
+                yield products_service_1.ProductsService.addNewProduct(newProduct);
                 console.log("PRODUCTS CONTROLLER : 200 Le nouveau produit a été ajouté au fichier productsData.json");
                 winston_logger_1.logger.info(`STATUS 200: ${req.method} ${req.url}`);
                 res.status(200).json({
                     message: "Le nouveau produit a été ajouté au fichier productsData.json",
                 });
             }
-        };
+        });
         //*********************GET/PUT PRODUCT BY ID*******************//
-        this.putProduct = async (req, res) => {
+        this.putProduct = (req, res) => __awaiter(this, void 0, void 0, function* () {
             // Cueillette des éléments dans le body (Postman) (req.body)
             const { title, price, description, inStock } = req.body;
             // Ici on vérifie si on peut convertir le id en int.
@@ -158,7 +159,7 @@ class ProductsController {
                 return;
             }
             // Recherche du produit dans le JSON
-            const productJson = await products_service_1.ProductsService.findById(idBody);
+            const productJson = yield products_service_1.ProductsService.findById(idBody);
             if (!productJson) {
                 console.log("CONTROLLER POST : L ID que vous avez entré n existe pas dans le fichier productsData.json");
                 winston_logger_1.logger.error(`STATUS 404 : ${req.method} ${req.url}`);
@@ -196,24 +197,17 @@ class ProductsController {
             }
             else {
                 // Appel à ProductsService pour mettre à jour le fichier productsData.json
-                await products_service_1.ProductsService.updateProduct(idBody, newProduct);
+                yield products_service_1.ProductsService.updateProduct(idBody, newProduct);
                 console.log("PRODUCTS CONTROLLER : 200 Le produit a été modifié dans le fichier productsData.json");
                 winston_logger_1.logger.info(`STATUS 400 : ${req.method} ${req.url}`);
                 res.status(200).json({
                     message: "Le produit a été modifié dans le fichier productsData.json",
                 });
             }
-        };
+        });
         //*********************DELETE PRODUCT BY ID*******************//
-        this.deleteProduct = async (req, res) => {
-            //Ici on vérifie si on peut convertir le id en int.
-            //Si il s'agit de chiffre, tout sera cool.  Sinon, ça retourne isNaN
+        this.deleteProduct = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const idBody = parseInt(req.params.id);
-            //401 Si le user n'est pas autorisé
-            // if (AUCUNE IDÉE) {
-            //   console.log('PRODUCTS CONTROLLER : 401 Vous nêtes pas autorisé à ajouter un produit')
-            //   res.status(401).json({ message: "Vous n'êtes pas autorisé à ajouter un produit" });
-            // }
             if (isNaN(idBody) || !idBody) {
                 console.log("CONTROLLER : L ID entré doit etre un entier");
                 winston_logger_1.logger.error(`STATUS 400 : ${req.method} ${req.url}`);
@@ -222,8 +216,7 @@ class ProductsController {
                 });
                 return;
             }
-            // Recherche du produit dans le JSON
-            const productJson = await products_service_1.ProductsService.findById(idBody);
+            const productJson = yield products_service_1.ProductsService.findById(idBody);
             if (!productJson) {
                 console.log("CONTROLLER POST : L ID que vous avez entré nexiste pas dasn le fichier productsData.json");
                 winston_logger_1.logger.error(`STATUS 404 : ${req.method} ${req.url}`);
@@ -234,7 +227,7 @@ class ProductsController {
             }
             else {
                 //Appel a ProductsService pour delete le fichier productsData.json avec le nouveau produit
-                await products_service_1.ProductsService.deleteProductById(idBody, productJson);
+                yield products_service_1.ProductsService.deleteProductById(idBody, productJson);
                 console.log("PRODUCTS CONTROLLER : 204 Le produit a été retiré du fichier productsData.json");
                 winston_logger_1.logger.info(`STATUS 400 : ${req.method} ${req.url}`);
                 res.status(204).json({
@@ -242,7 +235,7 @@ class ProductsController {
                 });
                 return;
             }
-        };
+        });
     }
 }
 exports.ProductsController = ProductsController;

@@ -67,7 +67,7 @@ app.use("/", error_middleware_1.errorMiddleware);
 // Connexion à MongoDB
 const MONGO_URI = 'mongodb+srv://cindybragdon:abc-123@cluster0.k9lfh.mongodb.net/mongoDb_Api_RESTful_PROD';
 mongoose_1.default.connect(MONGO_URI)
-    .then(() => console.log("INdex : Connecté à MongoDB!!"))
+    .then(() => console.log("Index : Connecté à MongoDB!!"))
     .catch((err) => console.error("Index : Erreur de connexion MongoDB :", err));
 // Appeler le fetch pour peupler MongoDB avec les produits de l'API Fake Store au démarrage
 (0, fetchPRODUCTSApiStoredInMongoDB_1.default)()
@@ -111,3 +111,4 @@ https.createServer(options, app).listen(port, () => {
         console.log("Le fichier usersData.json contient déjà des données.");
     }
 });
+exports.default = app;

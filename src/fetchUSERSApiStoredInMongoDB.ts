@@ -38,13 +38,13 @@ const fetchUSERSApiStoredInMongoDB = async () => {
 
     const users: User[] = await response.json();
 
-    console.log("Fetch Mongo Users : Voici les utilisateurs récupérés depuis l'API Fake Store avant validation :", users);
+    //console.log("Fetch Mongo Users : Voici les utilisateurs récupérés depuis l'API Fake Store avant validation :", users);
 
     // Validation des utilisateurs
     const validUsers: UserMongoDocument[] = users
       .map((user) => {
         if (!user.email || !user.password || !user.name.firstname || !user.name.lastname) {
-          console.error("Fetch Mongo Users : Utilisateur incomplet :", user);
+          //console.error("Fetch Mongo Users : Utilisateur incomplet :", user);
           return null;
         }
 
@@ -71,14 +71,14 @@ const fetchUSERSApiStoredInMongoDB = async () => {
       console.log("Fetch Mongo Users : Collection MongoDB vidée.");
       await UserSchema.insertMany(validUsers)
         .then((result) => {
-          console.log("Utilisateurs insérés avec succès :", result);
+          //console.log("Utilisateurs insérés avec succès :", result);
         })
         .catch((err) => {
-          console.error("Erreur d'insertion dans MongoDB :", err);
+          //console.error("Erreur d'insertion dans MongoDB :", err);
         });
     }
   } catch (error) {
-    console.error("Fetch Mongo Users : Erreur générale :", error);
+    //console.error("Fetch Mongo Users : Erreur générale :", error);
   }
 };
 

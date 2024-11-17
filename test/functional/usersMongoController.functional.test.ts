@@ -11,28 +11,23 @@ let mongoServer;
 require("dotenv").config();
 
 beforeAll(async () => {
-  if (mongoose.connection.readyState === 0) {
-    await mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://cindybragdon:abc-123@cluster0.k9lfh.mongodb.net/mongoDb_Api_RESTful_TEST");
-  }
+  //if (mongoose.connection.readyState === 0) {
+    //await mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://cindybragdon:abc-123@cluster0.k9lfh.mongodb.net/mongoDb_Api_RESTful_TEST");
+  //}
 });
 
 afterAll(async () => {
   await mongoose.disconnect();
 });
 
-// // Avant tous les tests : config In Memory MongoDB et connecte Mongoose
 // beforeEach(async () => {
 //     await mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://cindybragdon:abc-123@cluster0.k9lfh.mongodb.net/mongoDb_Api_RESTful_TEST"
 //     );
 //   });
-  
-// // Avant tous les tests : config In Memory MongoDB et connecte Mongoose
+
 // afterEach(async () => {
 //     await mongoose.connection.close();
 //   });
-
-  
-
 
     //*********************CREATE NEW USER*******************//
     describe("POST /v2/users/register", () => {
@@ -50,10 +45,8 @@ afterAll(async () => {
         expect(res.statusCode).toBe(201);
         expect(res.body.email).toBe("miniwheat@gmail.com");
       });
-    });
 
 
-    describe("POST /v2/users/register", () => {
       it("should return a status 400 error for missing email", async () => {
         const res = await request(app).post("/v2/users/register").send({
           role: 'gestionnaire',
@@ -88,7 +81,8 @@ afterAll(async () => {
         expect(res.body.message).toBe("Veuillez renseigner tous les champs, email et mot de passe sont requis.");
       });
     });
-    
+
+
 
 
       //*********************LOGIN USER*******************//
@@ -119,18 +113,21 @@ afterAll(async () => {
           const decoded = jwt.verify(res.body.token, JWT_SECRET) as jwt.JwtPayload;
           expect(decoded).toMatchObject({ user: { email: 'miniwheat@gmail.com' } });
         });
-      });
 
 
-      it('should return status 400 if credentials are missing or wrong', async () => {
-        const res = await request(app).post('/users/login').send({
-          email: '',
-          password: '',
+        it('should return status 400 if credentials are missing or wrong', async () => {
+          const res = await request(app).post('/users/login').send({
+            email: '',
+            password: '',
+          });
+        
+          expect(res.statusCode).toBe(400);
+          expect(res.body.message).toBe("Veuillez renseigner tous les champs, email et mot de passe sont requis.");
         });
-      
-        expect(res.statusCode).toBe(400);
-        expect(res.body.message).toBe("Veuillez renseigner tous les champs, email et mot de passe sont requis.");
       });
+
+
+
 
 
   /** 

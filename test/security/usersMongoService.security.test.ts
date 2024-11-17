@@ -16,7 +16,6 @@ describe('UserMongoController Security Tests', () => {
   describe('POST /users/login', () => {
     it('should reject SQL injection attempts in login', async () => {
       const maliciousSQLPayload = { email: "' OR 1=1 --", password: "password" };
-
       const response = await request(app)
         .post('/users/login')
         .send(maliciousSQLPayload);
@@ -27,8 +26,6 @@ describe('UserMongoController Security Tests', () => {
 
     it('should reject XSS injection attempts in login', async () => {
       const maliciousScriptedPayload = { email: "<script>alert('XSS')</script>", password: "password" };
-
-
       const response = await request(app)
         .post('/users/login')
         .send(maliciousScriptedPayload);
@@ -39,8 +36,6 @@ describe('UserMongoController Security Tests', () => {
 
     it('should reject command injection attempts in login', async () => {
       const maliciousCommandPayload = { email: "; rm -rf /", password: "password" };
-
-
       const response = await request(app)
         .post('/users/login')
         .send(maliciousCommandPayload);

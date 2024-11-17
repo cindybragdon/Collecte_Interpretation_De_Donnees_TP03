@@ -22,6 +22,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -37,14 +46,14 @@ const winston_logger_1 = require("../logger/winston.logger");
 class UserController {
     constructor() {
         //*********************REGISTER NEW USER*******************//
-        this.userConnected = async (req, res) => {
+        this.userConnected = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const usersList = Array.from(JSON.parse(fs.readFileSync("data/usersData.json", {
                 encoding: "utf8",
                 flag: "r",
             })));
             const id = usersList.length + 1;
             //console.log(req.body);
-            const hashedPassword = await bcryptjs_1.default.hash(req.body.password, 10);
+            const hashedPassword = yield bcryptjs_1.default.hash(req.body.password, 10);
             const newUser = new users_model_1.UsersModel(req.body.adresse, id, req.body.email, req.body.role, req.body.username, hashedPassword, req.body.name, req.body.phone, req.body.__v);
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             const isValidEmail = () => {
@@ -68,9 +77,9 @@ class UserController {
                     console.error("UsersController : Erreur lors de lécriture du nouveau user dans usersData.json", error);
                 }
             }
-        };
+        });
         //*********************LOGIN BY EMAIL AND ROLE*******************//
-        this.loginByEmail = async (req, res) => {
+        this.loginByEmail = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const { email, password } = req.body;
                 if (!email || !password) {
@@ -80,14 +89,14 @@ class UserController {
                     });
                     return;
                 }
-                const user = await users_service_1.UsersService.findUserEmail(email);
+                const user = yield users_service_1.UsersService.findUserEmail(email);
                 if (!user) {
                     winston_logger_1.logger.error(`STATUS 401 : ${req.method} ${req.url}`);
                     res.status(401).json({ message: "Connexion echouée" });
                     return;
                 }
                 // Comparer le mot de passe req.body avec le mot de passe stocké dans usersData.json
-                const isInputPasswordValid = await bcryptjs_1.default.compare(password, user.password);
+                const isInputPasswordValid = yield bcryptjs_1.default.compare(password, user.password);
                 //Si le mot de passe n'est pas valide
                 if (!isInputPasswordValid) {
                     winston_logger_1.logger.error(`STATUS 401 : ${req.method} ${req.url}`);
@@ -109,18 +118,22 @@ class UserController {
                 res.status(500).json({ message: "Erreur serveur" });
                 return;
             }
-        };
+        });
     }
     //*********************GET ALL USERS*******************//
-    async getAllUsers(req, res) {
-        console.log(req.headers);
-        console.log("REFRESH BROWSER On est dans UserController");
-        const users = await users_service_1.UsersService.getAllUsers();
-        res.json(users);
+    getAllUsers(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.headers);
+            console.log("REFRESH BROWSER On est dans UserController");
+            const users = yield users_service_1.UsersService.getAllUsers();
+            res.json(users);
+        });
     }
-    static async getAdminData(req, res) {
-        res.json({ message: "Données réservées aux administrateurs." });
-        return;
+    static getAdminData(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            res.json({ message: "Données réservées aux administrateurs." });
+            return;
+        });
     }
 }
 exports.UserController = UserController;

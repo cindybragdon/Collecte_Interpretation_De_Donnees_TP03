@@ -66,6 +66,6 @@ const userMongoController = new usersMongo_controller_1.UserMongoController();
  *       401:
  *         description: Identifiants invalides
  */
-router.post("/users/register", userMongoController.createNewUser);
-router.post("/users/login", userMongoController.userLogin);
+router.post("/v2/users/register", userMongoController.createNewUser);
+router.post("/v2/users/login", userMongoController.userLogin);
 exports.default = router;

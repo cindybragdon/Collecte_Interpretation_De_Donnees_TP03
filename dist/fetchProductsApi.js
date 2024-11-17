@@ -22,26 +22,37 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.fetchProductsFromAPi = fetchProductsFromAPi;
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
-async function fetchProductsFromAPi() {
-    // Fetch API qui renvoie les utilisateurs au format JSON
-    const productsFromApi = await fetch("https://fakestoreapi.com/products").then((response) => response.json());
-    //Populer le JSON avec productsData
-    //const productsData = JSON.stringify(products, null, 2);
-    const productsData = JSON.stringify(productsFromApi, null, 2);
-    const filePath = path.join(__dirname, "data/productsData.json");
-    //Si le répertoire n'existe pas, crée le
-    //if (!fs.existsSync(filePath)) {
-    //  fs.mkdirSync(filePath, { recursive: true });
-    //}
-    try {
-        fs.writeFileSync('data/productData.json', productsData);
-        console.log("FETCH PRODUITS : Le fichier productsData.json est populé par API FakeStore/products");
-    }
-    catch (err) {
-        console.error("FETCH PRODUITS : Erreur lors de lécriture de productsData dans productsData.json");
-    }
+function fetchProductsFromAPi() {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Fetch API qui renvoie les utilisateurs au format JSON
+        const productsFromApi = yield fetch("https://fakestoreapi.com/products").then((response) => response.json());
+        //Populer le JSON avec productsData
+        //const productsData = JSON.stringify(products, null, 2);
+        const productsData = JSON.stringify(productsFromApi, null, 2);
+        const filePath = path.join(__dirname, "data/productsData.json");
+        //Si le répertoire n'existe pas, crée le
+        //if (!fs.existsSync(filePath)) {
+        //  fs.mkdirSync(filePath, { recursive: true });
+        //}
+        try {
+            fs.writeFileSync('data/productData.json', productsData);
+            console.log("FETCH PRODUITS : Le fichier productsData.json est populé par API FakeStore/products");
+        }
+        catch (err) {
+            console.error("FETCH PRODUITS : Erreur lors de lécriture de productsData dans productsData.json");
+        }
+    });
 }

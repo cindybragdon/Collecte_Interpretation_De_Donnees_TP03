@@ -38,19 +38,19 @@ const fetchPRODUCTSApiStoredInMongoDB = async () => {
 
     const products: Product[] = await response.json();
 
-    console.log("Fetch Mongo : Voici les Produits récupérés depuis l'API Fake Store avant validation : ", products);
+    //console.log("Fetch Mongo : Voici les Produits récupérés depuis l'API Fake Store avant validation : ", products);
 
      // Validation des produits
      const validProducts: ProductMongoDocument[] = products
      .map((product) => {
 
        if (!(product.title.length >= 3 && product.title.length <= 50)) {
-         console.log('Fetch Mongo : Produit non valide:', product);
+         //console.log('Fetch Mongo : Produit non valide:', product);
          return null;
        }
 
        if (!product.title || !product.price) {
-         console.log('Fetch Mongo : Produit incomplet:', product);
+         //console.log('Fetch Mongo : Produit incomplet:', product);
          return null;
        }
 
@@ -68,14 +68,14 @@ const fetchPRODUCTSApiStoredInMongoDB = async () => {
      .filter(Boolean) as ProductMongoDocument[]; // Garder les produits valides
 
 
-    console.log(`Fetch Mongo : ${validProducts.length} produits valides trouvés.`);
+    //console.log(`Fetch Mongo : ${validProducts.length} produits valides trouvés.`);
 
     if (validProducts.length > 0) {
       await ProductSchema.deleteMany({}); 
       console.log("Fetch Mongo : Collection MongoDB vidée.");
       await ProductSchema.insertMany(validProducts) 
         .then((result) => {
-          console.log("Produits insérés avec succès :", result);
+          //console.log("Produits insérés avec succès :", result);
         })
         .catch((err) => {
           console.log("Erreur d'insertion dans MongoDB :", err);
